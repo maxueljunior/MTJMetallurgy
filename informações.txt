@@ -1,0 +1,28 @@
+################# - Orçamentos:
+
+# Rascunho de funcionalidades
+
+. Clientes, (Solicitam orçamento *pçs, sv-internos ou sv-campos* ou enviam a máquina direto para fábrica)
+
+. CRV, (Solicita uma proposta, Negocia valores com Cliente, Altera a lucratividade da proposta, Solicita consolidação ou liberação da Proposta).
+
+. Orçamentista, (Elabora uma proposta, Altera a lucratividade da proposta, Consolida ou Libera para a execução).
+
+. Produtos e Serviços,
+. Propostas,
+
+#################
+
+
+################# - Relações:
+
+Um Cliente pode ter varias propostas, e uma proposta pode ter apenas um Cliente.
+
+Um CRV lida com varios Clientes, e um Cliente lida apenas com um CRV.
+Um CRV lida com um orçamentista, e um orçamentista lida com um CRV.
+
+Um orçamentista pode fazer varias propostas, e uma proposta pode ter apenas um Orçamentista.
+
+Uma proposta pode ter varios produtos, e um produto pode ter em varias propostas.
+
+#################
