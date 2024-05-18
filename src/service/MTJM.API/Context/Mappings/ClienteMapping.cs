@@ -14,6 +14,11 @@ public class ClienteMapping : IEntityTypeConfiguration<Cliente>
             .IsRequired()
             .HasColumnType("varchar(14)");
 
+        builder.HasOne(e => e.CoordenadorRegional)
+            .WithMany(e => e.Clientes)
+            .HasForeignKey(e => e.CoordenadorRegional.Id)
+            .IsRequired();
+
         builder.ToTable("Clientes");
     }
 }
