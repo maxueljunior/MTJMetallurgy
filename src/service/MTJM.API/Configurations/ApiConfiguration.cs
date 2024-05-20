@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MTJM.API.Context;
+using System.Text.Json.Serialization;
 
 namespace MTJM.API.Configurations;
 
@@ -14,7 +15,11 @@ public static class ApiConfiguration
             options.UseSqlServer(connectionString);
         });
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
+
         builder.Services.AddEndpointsApiExplorer();
         return builder;
     }

@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MTJM.API.Models.Propostas;
 
 namespace MTJM.API.Models.Servicos;
 
-public class Servico
+public class Servico : Base
 {
     #region Properties
     public const decimal MINIMUM_HORAS = 0.00m;
@@ -15,6 +16,22 @@ public class Servico
     public decimal PrecoPorHora { get; set; }
     public string Unidade { get; set; }
     public ICollection<Proposta> Propostas { get; set; }
+    #endregion
+
+    #region Constructors
+    public Servico(string descricao, decimal horas, decimal precoPorHora, string unidade)
+    {
+        Descricao = descricao;
+        Horas = horas;
+        PrecoPorHora = precoPorHora;
+        Unidade = unidade;
+        ValidateModel();
+    }
+    #endregion
+
+    #region Methods
+    protected override void ValidateModel()
+        => ValidationResult = new ServicoValidator().Validate(this);
     #endregion
 }
 
