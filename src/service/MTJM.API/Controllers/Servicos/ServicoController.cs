@@ -7,28 +7,63 @@ using MTJM.API.Models.Servicos;
 namespace MTJM.API.Controllers.Servicos;
 
 [Route("api/[controller]")]
-[ApiController]
-public class ServicoController : ControllerBase
+public class ServicoController : BaseController
 {
-    private readonly AppDbContext _context;
+    private readonly IServicoRepository _servicoRepository;
 
-    public ServicoController(AppDbContext context)
+    public ServicoController(IServicoRepository servicoRepository)
     {
-        _context = context;
+        _servicoRepository = servicoRepository;
+    }
+
+    [HttpGet]
+    [Route("GetAll")]
+    public IActionResult GetAll()
+    {
+        var responseDTO = new List<ServicoDTO>();
+
+        _servicoRepository.GetAll().ToList().ForEach(servico =>
+        {
+            ServicoDTO s = servico;
+            responseDTO.Add(s);
+        });
+
+        return CustomResponse(responseDTO);
     }
 
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> Create(CreateServicoDTO servicoDTO)
+    public async Task<IActionResult> Create(RequestServicoDTO requestDTO)
     {
-        Servico servico = servicoDTO;
+        Servico servico = requestDTO;
 
-        if(servico.ValidationResult is not null) return BadRequest(servico.ValidationResult.Errors);
+        if(!servico.IsValid()) return CustomResponse(servico.ValidationResult);
 
-        await _context.Servicos.AddAsync(servico);
+        ServicoDTO responseDTO = await _servicoRepository.Create(servico);
 
-        await _context.SaveChangesAsync();
-
-        return Ok(servico);
+        return CustomResponse(responseDTO);
     }
+
+    [HttpPut]
+    [Route("Edit/{id:int}")]
+    public async Task<IActionResult> Edit(int id, RequestServicoDTO requestDTO)
+    {
+        var servico = await _servicoRepository.GetById(id);
+
+        if(servico is null)
+        {
+            AdicionaErros("Servico Not Found");
+            return CustomResponse();
+        }
+
+        servico.Update(requestDTO);
+
+        if(!servico.IsValid()) return CustomResponse(servico.ValidationResult);
+
+        await _servicoRepository.Edit(servico);
+
+        return CustomResponse();
+    }
+
+
 }

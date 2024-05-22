@@ -10,6 +10,8 @@ public class ServicoMapping : IEntityTypeConfiguration<Servico>
     {
         builder.HasKey(s => s.Id);
 
+        builder.Ignore(s => s.ValidationResult);
+
         builder.HasMany(s => s.Propostas)
             .WithMany(s => s.Servicos);
 
