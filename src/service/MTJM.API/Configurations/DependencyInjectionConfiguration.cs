@@ -1,4 +1,6 @@
-﻿using MTJM.API.Context.Repositories.Servicos;
+﻿using MTJM.API.Context.Repositories.Produtos;
+using MTJM.API.Context.Repositories.Servicos;
+using MTJM.API.Models.Produtos;
 using MTJM.API.Models.Servicos;
 
 namespace MTJM.API.Configurations;
@@ -9,6 +11,7 @@ public static class DependencyInjectionConfiguration
     {
         #region Repositories
         builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
+        builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
         #endregion
 
 

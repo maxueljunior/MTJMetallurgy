@@ -10,6 +10,8 @@ public class PropostaMapping : IEntityTypeConfiguration<Proposta>
     {
         builder.HasKey(p => p.Id);
 
+        builder.Ignore(p => p.ValidationResult);
+
         builder.HasOne(p => p.Orcamentista)
             .WithMany(p => p.Propostas)
             .HasForeignKey(p => p.OrcamentistaId)

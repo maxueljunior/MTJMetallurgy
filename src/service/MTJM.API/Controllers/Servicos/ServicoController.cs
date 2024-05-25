@@ -9,13 +9,20 @@ namespace MTJM.API.Controllers.Servicos;
 [Route("api/[controller]")]
 public class ServicoController : BaseController
 {
+    #region Properties
     private readonly IServicoRepository _servicoRepository;
+    #endregion
 
+    #region Constructors
     public ServicoController(IServicoRepository servicoRepository)
     {
         _servicoRepository = servicoRepository;
     }
+    #endregion
 
+    #region Public Methods
+
+    #region Get All
     [HttpGet]
     [Route("GetAll")]
     public IActionResult GetAll()
@@ -30,7 +37,28 @@ public class ServicoController : BaseController
 
         return CustomResponse(responseDTO);
     }
+    #endregion
 
+    #region Get By Id
+    [HttpGet]
+    [Route("GetById/{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var servico = await _servicoRepository.GetById(id);
+
+        if (servico is null)
+        {
+            AdicionaErros("Servico Not Found");
+            return CustomResponse();
+        }
+
+        ServicoDTO responseDTO = servico;
+
+        return CustomResponse(responseDTO);
+    }
+    #endregion
+
+    #region Create
     [HttpPost]
     [Route("Create")]
     public async Task<IActionResult> Create(RequestServicoDTO requestDTO)
@@ -43,7 +71,9 @@ public class ServicoController : BaseController
 
         return CustomResponse(responseDTO);
     }
+    #endregion
 
+    #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
     public async Task<IActionResult> Edit(int id, RequestServicoDTO requestDTO)
@@ -64,6 +94,27 @@ public class ServicoController : BaseController
 
         return CustomResponse();
     }
+    #endregion
 
+    #region Delete
+    [HttpDelete]
+    [Route("Delete/{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var servico = await _servicoRepository.GetById(id);
+
+        if (servico is null)
+        {
+            AdicionaErros("Servico Not Found");
+            return CustomResponse();
+        }
+
+        await _servicoRepository.Delete(id);
+
+        return CustomResponse();
+    }
+    #endregion
+
+    #endregion
 
 }

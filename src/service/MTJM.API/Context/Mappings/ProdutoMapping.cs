@@ -10,6 +10,8 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
     {
         builder.HasKey(p => p.Id);
 
+        builder.Ignore(p => p.ValidationResult);
+
         builder.HasMany(p => p.Propostas)
             .WithMany(p => p.Produtos);
 

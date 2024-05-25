@@ -6,14 +6,13 @@ using MTJM.API.Models.Servicos;
 
 namespace MTJM.API.Models.Propostas;
 
-public class Proposta
+public class Proposta : Base
 {
     #region Properties
 
     public const decimal MINIMUM_VALOR_TOTAL = 0.00m;
     public const int MINIMUM_PRAZO = 0;
 
-    public int Id { get; set; }
     public decimal ValorTotal { get; set; }
     public int Prazo { get; set; }
     public Status Status { get; set; }
@@ -27,7 +26,6 @@ public class Proposta
     public ICollection<Produto> Produtos { get; set; }
     public ICollection<Servico> Servicos { get; set; }
     #endregion
-
 }
 
 #region Fluent Validation
