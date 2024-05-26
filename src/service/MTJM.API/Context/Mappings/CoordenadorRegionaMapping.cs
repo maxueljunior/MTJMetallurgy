@@ -10,6 +10,8 @@ public class CoordenadorRegionaMapping : IEntityTypeConfiguration<CoordenadorReg
     {
         builder.HasKey(c => c.Id);
 
+        builder.Ignore(c => c.ValidationResult);
+
         builder.OwnsOne(
             c => c.Endereco,
             end =>
