@@ -1,29 +1,55 @@
 ﻿using FluentValidation;
+using MTJM.API.DTOs.Clientes;
 using MTJM.API.Models.Enderecos;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Propostas;
 
 namespace MTJM.API.Models.Clientes;
 
-public class Cliente
+public class Cliente : Base
 {
     #region Properties
     public const int MAX_LENGTH_CNPJ = 14;
     public const int MAX_LENGTH_CEP = 8;
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Cnpj { get; set; }
-    public Endereco Endereco { get; set; }
-    public bool Ativo { get; set; }
-    public int CoordenadorRegionalId { get; set; } // Required foreign key property
-    public CoordenadorRegional CoordenadorRegional { get; set; } // Required reference navigation to principal
+
+    public string Nome { get; private set; }
+    public string Cnpj { get; private set; }
+    public Endereco Endereco { get; private set; }
+    public bool Ativo { get; private set; }
+    public int? CoordenadorRegionalId { get; private set; } // Required foreign key property
+    public CoordenadorRegional? CoordenadorRegional { get; set; } // Required reference navigation to principal
     public ICollection<Proposta> Propostas { get; set; }
     #endregion
 
+    #region Constructor
+    private Cliente() { }
+
+    public Cliente(string nome, string cnpj, Endereco endereco)
+    {
+        Nome = nome;
+        Cnpj = cnpj;
+        Endereco = endereco;
+        SetActive(true);
+
+        ValidateModel();
+    }
+    #endregion
+
     #region Methods
+    protected override void ValidateModel()
+        => ValidationResult = new ClienteValidator().Validate(this);
     public void SetActive(bool ativo)
     {
         Ativo = ativo;
+    }
+
+    public void Update(RequestClienteDTO requestDTO)
+    {
+        Nome = requestDTO.Nome;
+        Cnpj = requestDTO.Cnpj;
+        Endereco = requestDTO.Endereco;
+
+        ValidateModel();
     }
     #endregion
 }

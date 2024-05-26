@@ -14,6 +14,8 @@ public class ClienteMapping : IEntityTypeConfiguration<Cliente>
             .IsRequired()
             .HasColumnType("varchar(14)");
 
+        builder.Ignore(c => c.ValidationResult);
+
         builder.OwnsOne(
             c => c.Endereco,
             end =>
@@ -26,10 +28,12 @@ public class ClienteMapping : IEntityTypeConfiguration<Cliente>
 
         // How to add mapping for property Endereco, but i'm trying but no mapping
 
+        builder.Property(e => e.CoordenadorRegionalId)
+            .IsRequired(false);
+
         builder.HasOne(e => e.CoordenadorRegional)
             .WithMany(e => e.Clientes)
-            .HasForeignKey(e => e.CoordenadorRegionalId)
-            .IsRequired();
+            .HasForeignKey(e => e.CoordenadorRegionalId);
 
         builder.ToTable("Cliente");
     }

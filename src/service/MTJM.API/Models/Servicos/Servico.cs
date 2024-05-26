@@ -19,6 +19,7 @@ public class Servico : Base
     #endregion
 
     #region Constructors
+    private Servico() { }
     public Servico(string descricao, decimal horas, decimal precoPorHora, string unidade)
     {
         Descricao = descricao;

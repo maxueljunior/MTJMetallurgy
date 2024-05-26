@@ -20,6 +20,7 @@ public class ProdutoDTO
             Descricao = produto.Descricao,
             Quantidade = produto.Quantidade,
             Preco = produto.Preco,
+            Unidade = produto.Unidade
         };
     }
 }

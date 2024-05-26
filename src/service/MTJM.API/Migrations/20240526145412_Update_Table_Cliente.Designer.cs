@@ -4,6 +4,7 @@ using MTJM.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTJM.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526145412_Update_Table_Cliente")]
+    partial class Update_Table_Cliente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,7 +223,7 @@ namespace MTJM.API.Migrations
 
                     b.HasIndex("PropostasId");
 
-                    b.ToTable("ProdutoProposta", (string)null);
+                    b.ToTable("ProdutoProposta");
                 });
 
             modelBuilder.Entity("PropostaServico", b =>
@@ -235,7 +238,7 @@ namespace MTJM.API.Migrations
 
                     b.HasIndex("ServicosId");
 
-                    b.ToTable("PropostaServico", (string)null);
+                    b.ToTable("PropostaServico");
                 });
 
             modelBuilder.Entity("MTJM.API.Models.Clientes.Cliente", b =>
@@ -244,7 +247,7 @@ namespace MTJM.API.Migrations
                         .WithMany("Clientes")
                         .HasForeignKey("CoordenadorRegionalId");
 
-                    b.OwnsOne("MTJM.API.Models.Clientes.Cliente.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("ClienteId")
                                 .HasColumnType("int");
@@ -271,7 +274,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("ClienteId");
 
-                            b1.ToTable("Cliente", (string)null);
+                            b1.ToTable("Cliente");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClienteId");
@@ -284,7 +287,7 @@ namespace MTJM.API.Migrations
 
             modelBuilder.Entity("MTJM.API.Models.Funcionarios.CoordenadorRegional", b =>
                 {
-                    b.OwnsOne("MTJM.API.Models.Funcionarios.CoordenadorRegional.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("CoordenadorRegionalId")
                                 .HasColumnType("int");
@@ -311,7 +314,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("CoordenadorRegionalId");
 
-                            b1.ToTable("CoordenadorRegional", (string)null);
+                            b1.ToTable("CoordenadorRegional");
 
                             b1.WithOwner()
                                 .HasForeignKey("CoordenadorRegionalId");
@@ -328,7 +331,7 @@ namespace MTJM.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MTJM.API.Models.Funcionarios.Orcamentista.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("OrcamentistaId")
                                 .HasColumnType("int");
@@ -355,7 +358,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("OrcamentistaId");
 
-                            b1.ToTable("Orcamentista", (string)null);
+                            b1.ToTable("Orcamentista");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrcamentistaId");

@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MTJM.API.DTOs.Produtos;
 using MTJM.API.Models.Propostas;
+using System.Text.Json.Serialization;
 
 namespace MTJM.API.Models.Produtos;
 
@@ -10,14 +12,15 @@ public class Produto : Base
     public const double MINIMUM_QUANTIDADE = 0.00d;
     public const decimal MINIMUM_PRECO = 0.00m;
 
-    public string Descricao { get; set; }
-    public double Quantidade { get; set; }
-    public Unidade Unidade { get; set; }
-    public decimal Preco { get; set; }
+    public string Descricao { get; private set; }
+    public double Quantidade { get; private set; }
+    public Unidade Unidade { get; private set; }
+    public decimal Preco { get; private set; }
     public ICollection<Proposta> Propostas { get; set; }
     #endregion
 
     #region Constructors
+    private Produto() { }
     public Produto(string descricao, double quantidade, Unidade unidade, decimal preco)
     {
         Descricao = descricao;
