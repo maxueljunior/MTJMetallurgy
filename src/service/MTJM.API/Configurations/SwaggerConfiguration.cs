@@ -4,7 +4,10 @@ public static class SwaggerConfiguration
 {
     public static WebApplicationBuilder AddSwaggerConfiguration(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.CustomSchemaIds(type => type.ToString());
+        });
         return builder;
     }
 

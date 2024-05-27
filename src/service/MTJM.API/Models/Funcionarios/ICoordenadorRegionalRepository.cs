@@ -1,5 +1,5 @@
 ﻿namespace MTJM.API.Models.Funcionarios;
 
-public interface ICoordenadorRegionalRepository
+public interface ICoordenadorRegionalRepository : IRepository<CoordenadorRegional>
 {
 }

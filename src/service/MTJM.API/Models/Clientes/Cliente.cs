@@ -43,7 +43,7 @@ public class Cliente : Base
         Ativo = ativo;
     }
 
-    public void Update(RequestClienteDTO requestDTO)
+    public void Update(RequestCoordenadorRegionalDTO requestDTO)
     {
         Nome = requestDTO.Nome;
         Cnpj = requestDTO.Cnpj;

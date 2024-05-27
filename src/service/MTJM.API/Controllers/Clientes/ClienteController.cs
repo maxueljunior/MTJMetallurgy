@@ -26,11 +26,11 @@ public class ClienteController : BaseController
     [Route("GetAll")]
     public IActionResult GetAll()
     {
-        var responseDTO = new List<ClienteDTO>();
+        var responseDTO = new List<CoordenadorRegionalDTO>();
 
         _clienteRepository.GetAll().ToList().ForEach(cliente =>
         {
-            ClienteDTO p = cliente;
+            CoordenadorRegionalDTO p = cliente;
             responseDTO.Add(p);
         });
 
@@ -51,7 +51,7 @@ public class ClienteController : BaseController
             return CustomResponse();
         }
 
-        ClienteDTO responseDTO = cliente;
+        CoordenadorRegionalDTO responseDTO = cliente;
 
         return CustomResponse(responseDTO);
     }
@@ -60,13 +60,13 @@ public class ClienteController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> Create(RequestClienteDTO requestDTO)
+    public async Task<IActionResult> Create(RequestCoordenadorRegionalDTO requestDTO)
     {
         Cliente cliente = requestDTO;
 
         if (!cliente.IsValid()) return CustomResponse(cliente.ValidationResult);
 
-        ClienteDTO responseDTO = await _clienteRepository.Create(cliente);
+        CoordenadorRegionalDTO responseDTO = await _clienteRepository.Create(cliente);
 
         return CustomResponse(responseDTO);
     }
@@ -75,7 +75,7 @@ public class ClienteController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
-    public async Task<IActionResult> Edit(int id, RequestClienteDTO requestDTO)
+    public async Task<IActionResult> Edit(int id, RequestCoordenadorRegionalDTO requestDTO)
     {
         var cliente = await _clienteRepository.GetById(id);
 

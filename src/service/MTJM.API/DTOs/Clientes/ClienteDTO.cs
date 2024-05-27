@@ -5,7 +5,7 @@ using MTJM.API.Models.Produtos;
 
 namespace MTJM.API.DTOs.Clientes;
 
-public class ClienteDTO
+public class CoordenadorRegionalDTO
 {
     public int Id { get; set; }
     public string Nome { get; set; }
@@ -14,9 +14,9 @@ public class ClienteDTO
     public bool Ativo { get; set; }
     public int? CoordenadorRegionalId { get; set; }
 
-    public static implicit operator ClienteDTO(Cliente c)
+    public static implicit operator CoordenadorRegionalDTO(Cliente c)
     {
-        return new ClienteDTO
+        return new CoordenadorRegionalDTO
         {
             Id = c.Id,
             Nome = c.Nome,
