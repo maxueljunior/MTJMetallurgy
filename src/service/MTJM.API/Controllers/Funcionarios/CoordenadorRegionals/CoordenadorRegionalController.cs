@@ -27,11 +27,11 @@ public class CoordenadorRegionalController : BaseController
     [Route("GetAll")]
     public IActionResult GetAll()
     {
-        var responseDTO = new List<CoordenadorRegionalDTO>();
+        var responseDTO = new List<OrcamentistaDTO>();
 
         _coordenadorRegionalRepository.GetAll().ToList().ForEach(crv =>
         {
-            CoordenadorRegionalDTO p = crv;
+            OrcamentistaDTO p = crv;
             responseDTO.Add(p);
         });
 
@@ -52,7 +52,7 @@ public class CoordenadorRegionalController : BaseController
             return CustomResponse();
         }
 
-        CoordenadorRegionalDTO responseDTO = crv;
+        OrcamentistaDTO responseDTO = crv;
 
         return CustomResponse(responseDTO);
     }
@@ -61,13 +61,13 @@ public class CoordenadorRegionalController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> Create(RequestCoordenadorRegionalDTO requestDTO)
+    public async Task<IActionResult> Create(RequestOrcamentistaDTO requestDTO)
     {
         CoordenadorRegional crv = requestDTO;
 
         if (!crv.IsValid()) return CustomResponse(crv.ValidationResult);
 
-        CoordenadorRegionalDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
+        OrcamentistaDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
 
         return CustomResponse(responseDTO);
     }
@@ -76,7 +76,7 @@ public class CoordenadorRegionalController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
-    public async Task<IActionResult> Edit(int id, RequestCoordenadorRegionalDTO requestDTO)
+    public async Task<IActionResult> Edit(int id, RequestOrcamentistaDTO requestDTO)
     {
         var crv = await _coordenadorRegionalRepository.GetById(id);
 

@@ -12,7 +12,6 @@ public class Funcionario : Base
     public DateTime DataContratacao { get; set; }
     public decimal Salario { get; set; }
     public Endereco Endereco { get; set; }
-    public Cargo Cargo { get; set; }
     public bool Ativo { get; set; }
     public int TempoDeCasa
     {
@@ -26,14 +25,13 @@ public class Funcionario : Base
     #region Constructor
     protected Funcionario() { }
 
-    public Funcionario(string nome, string sobrenome, DateTime dataContratacao, decimal salario, Endereco endereco, Cargo cargo)
+    public Funcionario(string nome, string sobrenome, DateTime dataContratacao, decimal salario, Endereco endereco)
     {
         Nome = nome;
         Sobrenome = sobrenome;
         DataContratacao = dataContratacao;
         Salario = salario;
         Endereco = endereco;
-        Cargo = cargo;
         SetActive(true);
     }
     #endregion

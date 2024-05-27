@@ -3,7 +3,7 @@ using MTJM.API.Models.Funcionarios;
 
 namespace MTJM.API.DTOs.Funcionarios.CoordenadorRegionals;
 
-public class CoordenadorRegionalDTO
+public class OrcamentistaDTO
 {
     public int Id { get; set; }
     public string Nome { get; set; }
@@ -11,12 +11,11 @@ public class CoordenadorRegionalDTO
     public DateTime DataContratacao { get; set; }
     public decimal Salario { get; set; }
     public Endereco Endereco { get; set; }
-    public Cargo Cargo { get; set; }
     public int TempoDeCasa { get; set; }
 
-    public static implicit operator CoordenadorRegionalDTO(CoordenadorRegional c)
+    public static implicit operator OrcamentistaDTO(CoordenadorRegional c)
     {
-        return new CoordenadorRegionalDTO
+        return new OrcamentistaDTO
         {
             Id = c.Id,
             Nome = c.Nome,
@@ -24,7 +23,6 @@ public class CoordenadorRegionalDTO
             Sobrenome = c.Sobrenome,
             DataContratacao = c.DataContratacao,
             Endereco = c.Endereco,
-            Cargo = c.Cargo,
             TempoDeCasa = c.TempoDeCasa
         };
     }

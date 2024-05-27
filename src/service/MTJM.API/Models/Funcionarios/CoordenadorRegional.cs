@@ -21,8 +21,7 @@ public class CoordenadorRegional : Funcionario
         string sobrenome,
         DateTime dataContratacao,
         decimal salario,
-        Endereco endereco,
-        Cargo cargo) : base(nome, sobrenome, dataContratacao, salario, endereco, cargo)
+        Endereco endereco) : base(nome, sobrenome, dataContratacao, salario, endereco)
     {
         ValidateModel();
     }
@@ -32,14 +31,13 @@ public class CoordenadorRegional : Funcionario
     protected override void ValidateModel()
         => ValidationResult = new CoordenadorRegionalValidator().Validate(this);
 
-    public void Update(RequestCoordenadorRegionalDTO requestDTO)
+    public void Update(RequestOrcamentistaDTO requestDTO)
     {
         Nome = requestDTO.Nome;
         Sobrenome = requestDTO.Sobrenome;
         DataContratacao = requestDTO.DataContratacao;
         Salario = requestDTO.Salario;
         Endereco = requestDTO.Endereco;
-        Cargo = requestDTO.Cargo;
 
         ValidateModel();
     }
