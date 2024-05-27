@@ -12,6 +12,12 @@ public class PropostaMapping : IEntityTypeConfiguration<Proposta>
 
         builder.Ignore(p => p.ValidationResult);
 
+        builder.Property(p => p.ValorTotal)
+            .IsRequired(false);
+
+        builder.Property(p => p.Prazo)
+            .IsRequired(false);
+
         builder.HasOne(p => p.Orcamentista)
             .WithMany(p => p.Propostas)
             .HasForeignKey(p => p.OrcamentistaId)

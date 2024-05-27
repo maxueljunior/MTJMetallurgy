@@ -13,8 +13,8 @@ public class Proposta : Base
     public const decimal MINIMUM_VALOR_TOTAL = 0.00m;
     public const int MINIMUM_PRAZO = 0;
 
-    public decimal ValorTotal { get; set; }
-    public int Prazo { get; set; }
+    public decimal? ValorTotal { get; set; }
+    public int? Prazo { get; set; }
     public Status Status { get; set; }
     public string CondicaoPagamento { get; set; }
     public int ClienteId { get; set; } // Required foreign key property
