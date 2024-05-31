@@ -40,6 +40,16 @@ public abstract class BaseController : ControllerBase
         return CustomResponse();
     }
 
+    protected IActionResult CustomResponse(List<string> errors)
+    {
+        foreach (var error in errors)
+        {
+            AdicionaErros(error);
+        }
+
+        return CustomResponse();
+    }
+
     protected void AdicionaErros(string erro)
     {
         Errors.Add(erro);
