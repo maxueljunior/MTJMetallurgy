@@ -30,7 +30,22 @@ public class PropostaDTO
     public List<string> Errors { get; private set; } = new List<string>();
 
     public static implicit operator PropostaDTO(Proposta p)
-        => new PropostaDTO
+    {
+        var produtosDTO = new List<ProdutoDTO>();
+
+        foreach (var produto in p.Produtos)
+        {
+            produtosDTO.Add(produto);
+        }
+
+        var servicosDTO = new List<ServicoDTO>();
+
+        foreach (var servico in p.Servicos)
+        {
+            servicosDTO.Add(servico);
+        }
+
+        return new PropostaDTO
         {
             Id = p.Id,
             ValorTotal = p.ValorTotal,
@@ -39,10 +54,11 @@ public class PropostaDTO
             ClienteId = p.ClienteId,
             CoordenadorRegionalId = p.CoordenadorRegionalId,
             OrcamentistaId = p.OrcamentistaId,
-            Produtos = (ICollection<ProdutoDTO>) p.Produtos,
-            Servicos = (ICollection<ServicoDTO>) p.Servicos,
+            Produtos = produtosDTO,
+            Servicos = servicosDTO,
             ValidationResult = p.ValidationResult
         };
+    }
 
     public void AddError(string message) => Errors.Add(message);
 }

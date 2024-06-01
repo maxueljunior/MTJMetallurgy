@@ -48,8 +48,10 @@ public class Proposta : Base
         Produtos.Add(produto);
         var valorTotal = (decimal)(produto.Quantidade * double.Parse(produto.Preco.ToString()));
         RecalcularValorTotal(valorTotal);
+
+        ValidateModel();
     }
-    private void RecalcularValorTotal(decimal valorTotal) => ValorTotal = valorTotal;
+    private void RecalcularValorTotal(decimal valorTotal) => ValorTotal += valorTotal;
     #endregion
 }
 

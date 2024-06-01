@@ -70,7 +70,7 @@ public class PropostaServices : IPropostaServices
     #region Insert Produto Proposta
     public async Task<PropostaDTO> InsertProdutoProposta(int propostaId, ProdutoDTO requestProdutoDTO)
     {
-        var proposta = await _propostaRepository.GetById(propostaId);
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(propostaId);
         PropostaDTO responseDTO = new PropostaDTO();
 
         if (proposta is null)
@@ -81,10 +81,16 @@ public class PropostaServices : IPropostaServices
         if (produto is null)
             responseDTO.AddError("Produto Not Found");
 
+        if (proposta.Produtos.First(prod => prod.Id == produto.Id) is not null)
+            responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
+
         if(responseDTO.Errors.Any())
             return responseDTO;
 
         proposta.AddProduto(produto);
+
+        await _propostaRepository.Edit(proposta);
+
         responseDTO = proposta;
 
         return responseDTO;

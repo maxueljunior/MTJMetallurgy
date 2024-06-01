@@ -2,5 +2,5 @@
 
 public interface IPropostaRepository : IRepository<Proposta>
 {
-
+    Task<Proposta> GetByIdAllProdutosAndServicos(int propostaId);
 }
