@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MTJM.API.DTOs.Propostas;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Produtos;
@@ -23,7 +24,7 @@ public class Proposta : Base
     public CoordenadorRegional CoordenadorRegional { get; private set; } // Required reference navigation to principal
     public int OrcamentistaId { get; private set; } // Required foreign key property
     public Orcamentista Orcamentista { get; private set; } // Required reference navigation to principal
-    public ICollection<Produto> Produtos { get; private set; } = new List<Produto>();
+    public ICollection<PropostaProduto> PropostaProdutos { get; private set; } = new List<PropostaProduto>();
     public ICollection<Servico> Servicos { get; private set; } = new List<Servico>();
     #endregion
 
@@ -43,10 +44,10 @@ public class Proposta : Base
     #region Methods
     protected override void ValidateModel() => ValidationResult = new PropostaValidator().Validate(this);
     private void SetStatus(Status status) => Status = status;
-    public void AddProduto(Produto produto)
+    public void AddProduto(PropostaProduto propostaProduto)
     {
-        Produtos.Add(produto);
-        var valorTotal = (decimal)(produto.Quantidade * double.Parse(produto.Preco.ToString()));
+        PropostaProdutos.Add(propostaProduto);
+        var valorTotal = (decimal)(propostaProduto.Quantidade * double.Parse(propostaProduto.Preco.ToString()));
         RecalcularValorTotal(valorTotal);
 
         ValidateModel();

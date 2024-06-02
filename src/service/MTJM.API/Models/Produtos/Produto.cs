@@ -17,6 +17,7 @@ public class Produto : Base
     public Unidade Unidade { get; private set; }
     public decimal Preco { get; private set; }
     public ICollection<Proposta> Propostas { get; set; }
+    public ICollection<PropostaProduto> PropostaProdutos { get; set; }
     #endregion
 
     #region Constructors

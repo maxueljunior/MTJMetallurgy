@@ -20,7 +20,7 @@ public class PropostaDTO
     public int ClienteId { get; set; }
     public int CoordenadorRegionalId { get; set; }
     public int OrcamentistaId { get; set; }
-    public ICollection<ProdutoDTO> Produtos { get; set; }
+    public ICollection<PropostaProdutoDTO> Produtos { get; set; }
     public ICollection<ServicoDTO> Servicos { get; set; }
 
     [JsonIgnore]
@@ -31,9 +31,9 @@ public class PropostaDTO
 
     public static implicit operator PropostaDTO(Proposta p)
     {
-        var produtosDTO = new List<ProdutoDTO>();
+        var produtosDTO = new List<PropostaProdutoDTO>();
 
-        foreach (var produto in p.Produtos)
+        foreach(var produto in p.PropostaProdutos)
         {
             produtosDTO.Add(produto);
         }

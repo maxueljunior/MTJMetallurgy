@@ -14,7 +14,6 @@ public class PropostaRepository : Repository<Proposta>, IPropostaRepository
     public async Task<Proposta> GetByIdAllProdutosAndServicos(int propostaId)
     {
         return await _context.Propostas
-            .Include(p => p.Produtos)
             .Include(p => p.Servicos)
             .FirstOrDefaultAsync(p => p.Id == propostaId);
     }

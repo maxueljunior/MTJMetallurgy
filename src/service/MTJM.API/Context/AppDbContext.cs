@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Produto> Produtos { get; set;}
     public DbSet<Proposta> Propostas { get; set;}
     public DbSet<Servico> Servicos { get; set;}
+    public DbSet<PropostaProduto> PropostaProdutos { get; set;}
     #endregion
 
     #region Override Methods

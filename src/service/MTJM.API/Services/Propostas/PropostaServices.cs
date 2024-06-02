@@ -68,26 +68,26 @@ public class PropostaServices : IPropostaServices
     #endregion
 
     #region Insert Produto Proposta
-    public async Task<PropostaDTO> InsertProdutoProposta(int propostaId, ProdutoDTO requestProdutoDTO)
+    public async Task<PropostaDTO> InsertProdutoProposta(PropostaProdutoDTO requestProdutoDTO)
     {
-        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(propostaId);
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(requestProdutoDTO.PropostaId);
         PropostaDTO responseDTO = new PropostaDTO();
 
         if (proposta is null)
             responseDTO.AddError("Proposta Not Found");
 
-        var produto = await GetProduto(requestProdutoDTO.Id);
+        var produto = await GetProduto(requestProdutoDTO.ProdutoId);
 
         if (produto is null)
             responseDTO.AddError("Produto Not Found");
 
-        if (proposta.Produtos.First(prod => prod.Id == produto.Id) is not null)
-            responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
+        //if (proposta.PropostaProdutos.First(prod => prod.ProdutoId == produto.Id) is not null)
+        //    responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
 
-        if(responseDTO.Errors.Any())
+        if (responseDTO.Errors.Any())
             return responseDTO;
 
-        proposta.AddProduto(produto);
+        proposta.AddProduto(CreatePropostaProduto(produto, requestProdutoDTO));
 
         await _propostaRepository.Edit(proposta);
 
@@ -108,5 +108,15 @@ public class PropostaServices : IPropostaServices
         => await _coordenadorRegionalRepository.GetById(coordenadorRegionalId) is null ? false : true;
     private async Task<Produto> GetProduto(int produtoId)
         => await _produtoRepository.GetById(produtoId);
+    private PropostaProduto CreatePropostaProduto(Produto produto, PropostaProdutoDTO requestProdutoDTO)
+    {
+        var valorProduto = (decimal)(double.Parse(produto.Preco.ToString()) * ((requestProdutoDTO.Lucratividade / 100) + 1));
+        return new PropostaProduto(requestProdutoDTO.PropostaId,
+            produto.Id,
+            requestProdutoDTO.Quantidade,
+            valorProduto,
+            produto.Descricao,
+            requestProdutoDTO.Lucratividade);
+    }
     #endregion
 }
