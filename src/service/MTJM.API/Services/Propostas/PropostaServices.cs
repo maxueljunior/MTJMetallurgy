@@ -68,7 +68,7 @@ public class PropostaServices : IPropostaServices
     #endregion
 
     #region Insert Produto Proposta
-    public async Task<PropostaDTO> InsertProdutoProposta(PropostaProdutoDTO requestProdutoDTO)
+    public async Task<PropostaDTO> InsertProdutoProposta(CreatePropostaProdutoDTO requestProdutoDTO)
     {
         var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(requestProdutoDTO.PropostaId);
         PropostaDTO responseDTO = new PropostaDTO();
@@ -81,13 +81,43 @@ public class PropostaServices : IPropostaServices
         if (produto is null)
             responseDTO.AddError("Produto Not Found");
 
-        //if (proposta.PropostaProdutos.First(prod => prod.ProdutoId == produto.Id) is not null)
-        //    responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
+        if (produto is not null && proposta.PropostaProdutos.FirstOrDefault(prod => prod.ProdutoId == produto.Id) is not null)
+            responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
 
         if (responseDTO.Errors.Any())
             return responseDTO;
 
         proposta.AddProduto(CreatePropostaProduto(produto, requestProdutoDTO));
+
+        await _propostaRepository.Edit(proposta);
+
+        responseDTO = proposta;
+
+        return responseDTO;
+    }
+    #endregion
+
+    #region Insert Servico Proposta
+    public async Task<PropostaDTO> InsertServicoProposta(CreatePropostaServicoDTO requestServicoDTO)
+    {
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(requestServicoDTO.PropostaId);
+        PropostaDTO responseDTO = new PropostaDTO();
+
+        if (proposta is null)
+            responseDTO.AddError("Proposta Not Found");
+
+        var servico = await GetServico(requestServicoDTO.ServicoId);
+
+        if(servico is null)
+            responseDTO.AddError("Servico Not Found");
+
+        if (servico is not null && proposta.PropostaServicos.FirstOrDefault(serv => serv.ServicoId == servico.Id) is not null)
+            responseDTO.AddError($"Produto {servico.Descricao} has already been inserted");
+
+        if (responseDTO.Errors.Any())
+            return responseDTO;
+
+        proposta.AddServico(CreatePropostaServico(servico, requestServicoDTO));
 
         await _propostaRepository.Edit(proposta);
 
@@ -108,7 +138,9 @@ public class PropostaServices : IPropostaServices
         => await _coordenadorRegionalRepository.GetById(coordenadorRegionalId) is null ? false : true;
     private async Task<Produto> GetProduto(int produtoId)
         => await _produtoRepository.GetById(produtoId);
-    private PropostaProduto CreatePropostaProduto(Produto produto, PropostaProdutoDTO requestProdutoDTO)
+    private async Task<Servico> GetServico(int servicoId)
+        => await _servicoRepository.GetById(servicoId);
+    private PropostaProduto CreatePropostaProduto(Produto produto, CreatePropostaProdutoDTO requestProdutoDTO)
     {
         var valorProduto = (decimal)(double.Parse(produto.Preco.ToString()) * ((requestProdutoDTO.Lucratividade / 100) + 1));
         return new PropostaProduto(requestProdutoDTO.PropostaId,
@@ -118,5 +150,16 @@ public class PropostaServices : IPropostaServices
             produto.Descricao,
             requestProdutoDTO.Lucratividade);
     }
+    private PropostaServico CreatePropostaServico(Servico servico, CreatePropostaServicoDTO requestServicoDTO)
+    {
+        var valorHoras = (decimal)(double.Parse(servico.PrecoPorHora.ToString()) * ((requestServicoDTO.Lucratividade / 100) + 1));
+        return new PropostaServico(requestServicoDTO.PropostaId,
+            servico.Id,
+            servico.Descricao,
+            valorHoras,
+            servico.Horas,
+            requestServicoDTO.Lucratividade);
+    }
+
     #endregion
 }

@@ -41,8 +41,15 @@ public class PropostaController : BaseController
     #region POST - Insert a Produto
     [HttpPost]
     [Route("InsertProduto")]
-    public async Task<IActionResult> InsertProduto(PropostaProdutoDTO requestProdutoDTO) => 
+    public async Task<IActionResult> InsertProduto(CreatePropostaProdutoDTO requestProdutoDTO) => 
         ValidAndReturn(await _propostaServices.InsertProdutoProposta(requestProdutoDTO));
+    #endregion
+
+    #region POST - Insert a Servico
+    [HttpPost]
+    [Route("InsertServico")]
+    public async Task<IActionResult> InsertServico(CreatePropostaServicoDTO requestServicoDTO) =>
+        ValidAndReturn(await _propostaServices.InsertServicoProposta(requestServicoDTO));
     #endregion
 
     #endregion

@@ -15,7 +15,7 @@ public class Servico : Base
     public decimal Horas { get; private set; }
     public decimal PrecoPorHora { get; private set; }
     public string Unidade { get; private set; }
-    public ICollection<Proposta> Propostas { get; private set; }
+    public ICollection<PropostaServico> PropostaServicos { get; private set; }
     #endregion
 
     #region Constructors

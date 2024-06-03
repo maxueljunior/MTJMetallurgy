@@ -12,9 +12,6 @@ public class ServicoMapping : IEntityTypeConfiguration<Servico>
 
         builder.Ignore(s => s.ValidationResult);
 
-        builder.HasMany(s => s.Propostas)
-            .WithMany(s => s.Servicos);
-
         builder.ToTable("Servico");
     }
 }

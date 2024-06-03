@@ -4,6 +4,7 @@ using MTJM.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTJM.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603233028_Update_Table_Proposta_Servico")]
+    partial class Update_Table_Proposta_Servico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,8 +218,8 @@ namespace MTJM.API.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("varchar(100)");
 
-                    b.Property<decimal>("Horas")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Horas")
+                        .HasColumnType("float");
 
                     b.Property<double>("Lucratividade")
                         .HasColumnType("float");

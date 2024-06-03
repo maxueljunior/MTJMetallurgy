@@ -7,5 +7,6 @@ namespace MTJM.API.Services.Propostas;
 public interface IPropostaServices
 {
     Task<PropostaDTO> CreateProposta(CreatePropostaDTO requestDTO);
-    Task<PropostaDTO> InsertProdutoProposta(PropostaProdutoDTO requestProdutoDTO);
+    Task<PropostaDTO> InsertProdutoProposta(CreatePropostaProdutoDTO requestProdutoDTO);
+    Task<PropostaDTO> InsertServicoProposta(CreatePropostaServicoDTO requestServicoDTO);
 }

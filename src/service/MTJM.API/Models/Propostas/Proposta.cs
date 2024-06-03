@@ -14,7 +14,7 @@ public class Proposta : Base
     public const decimal MINIMUM_VALOR_TOTAL = 0.00m;
     public const int MINIMUM_PRAZO = 0;
 
-    public decimal? ValorTotal { get; private set; }
+    public decimal ValorTotal { get; private set; } = 0;
     public int? Prazo { get; private set; }
     public Status Status { get; private set; }
     public string CondicaoPagamento { get; private set; }
@@ -25,7 +25,7 @@ public class Proposta : Base
     public int OrcamentistaId { get; private set; } // Required foreign key property
     public Orcamentista Orcamentista { get; private set; } // Required reference navigation to principal
     public ICollection<PropostaProduto> PropostaProdutos { get; private set; } = new List<PropostaProduto>();
-    public ICollection<Servico> Servicos { get; private set; } = new List<Servico>();
+    public ICollection<PropostaServico> PropostaServicos { get; private set; } = new List<PropostaServico>();
     #endregion
 
     #region Constructors
@@ -52,7 +52,19 @@ public class Proposta : Base
 
         ValidateModel();
     }
-    private void RecalcularValorTotal(decimal valorTotal) => ValorTotal += valorTotal;
+    private void RecalcularValorTotal(decimal valorTotal)
+    {
+        ValorTotal += valorTotal;
+    }
+
+    public void AddServico(PropostaServico propostaServico)
+    {
+        PropostaServicos.Add(propostaServico);
+        var valorTotal = propostaServico.Horas * propostaServico.PrecoPorHora;
+        RecalcularValorTotal(valorTotal);
+
+        ValidateModel();
+    }
     #endregion
 }
 

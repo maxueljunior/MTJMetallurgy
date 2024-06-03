@@ -4,6 +4,7 @@ using MTJM.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTJM.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603231626_Remove_Column_Produto_Id_In_Propostas")]
+    partial class Remove_Column_Produto_Id_In_Propostas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,33 +207,6 @@ namespace MTJM.API.Migrations
                     b.ToTable("PropostaProdutos");
                 });
 
-            modelBuilder.Entity("MTJM.API.Models.Propostas.PropostaServico", b =>
-                {
-                    b.Property<int>("PropostaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<decimal>("Horas")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<double>("Lucratividade")
-                        .HasColumnType("float");
-
-                    b.Property<decimal>("PrecoPorHora")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("PropostaId", "ServicoId");
-
-                    b.HasIndex("ServicoId");
-
-                    b.ToTable("PropostaServico");
-                });
-
             modelBuilder.Entity("MTJM.API.Models.Servicos.Servico", b =>
                 {
                     b.Property<int>("Id")
@@ -254,6 +230,21 @@ namespace MTJM.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Servico", (string)null);
+                });
+
+            modelBuilder.Entity("PropostaServico", b =>
+                {
+                    b.Property<int>("PropostasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicosId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PropostasId", "ServicosId");
+
+                    b.HasIndex("ServicosId");
+
+                    b.ToTable("PropostaServico");
                 });
 
             modelBuilder.Entity("MTJM.API.Models.Clientes.Cliente", b =>
@@ -430,23 +421,19 @@ namespace MTJM.API.Migrations
                     b.Navigation("Proposta");
                 });
 
-            modelBuilder.Entity("MTJM.API.Models.Propostas.PropostaServico", b =>
+            modelBuilder.Entity("PropostaServico", b =>
                 {
-                    b.HasOne("MTJM.API.Models.Propostas.Proposta", "Proposta")
-                        .WithMany("PropostaServicos")
-                        .HasForeignKey("PropostaId")
+                    b.HasOne("MTJM.API.Models.Propostas.Proposta", null)
+                        .WithMany()
+                        .HasForeignKey("PropostasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MTJM.API.Models.Servicos.Servico", "Servico")
-                        .WithMany("PropostaServicos")
-                        .HasForeignKey("ServicoId")
+                    b.HasOne("MTJM.API.Models.Servicos.Servico", null)
+                        .WithMany()
+                        .HasForeignKey("ServicosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Proposta");
-
-                    b.Navigation("Servico");
                 });
 
             modelBuilder.Entity("MTJM.API.Models.Clientes.Cliente", b =>
@@ -476,13 +463,6 @@ namespace MTJM.API.Migrations
             modelBuilder.Entity("MTJM.API.Models.Propostas.Proposta", b =>
                 {
                     b.Navigation("PropostaProdutos");
-
-                    b.Navigation("PropostaServicos");
-                });
-
-            modelBuilder.Entity("MTJM.API.Models.Servicos.Servico", b =>
-                {
-                    b.Navigation("PropostaServicos");
                 });
 #pragma warning restore 612, 618
         }

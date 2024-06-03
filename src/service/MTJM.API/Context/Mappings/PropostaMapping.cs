@@ -13,7 +13,7 @@ public class PropostaMapping : IEntityTypeConfiguration<Proposta>
         builder.Ignore(p => p.ValidationResult);
 
         builder.Property(p => p.ValorTotal)
-            .IsRequired(false);
+            .IsRequired(true);
 
         builder.Property(p => p.Prazo)
             .IsRequired(false);

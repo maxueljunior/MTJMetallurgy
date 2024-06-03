@@ -21,7 +21,7 @@ public class PropostaDTO
     public int CoordenadorRegionalId { get; set; }
     public int OrcamentistaId { get; set; }
     public ICollection<PropostaProdutoDTO> Produtos { get; set; }
-    public ICollection<ServicoDTO> Servicos { get; set; }
+    public ICollection<PropostaServicoDTO> Servicos { get; set; }
 
     [JsonIgnore]
     public ValidationResult ValidationResult { get; set; }
@@ -38,9 +38,9 @@ public class PropostaDTO
             produtosDTO.Add(produto);
         }
 
-        var servicosDTO = new List<ServicoDTO>();
+        var servicosDTO = new List<PropostaServicoDTO>();
 
-        foreach (var servico in p.Servicos)
+        foreach (var servico in p.PropostaServicos)
         {
             servicosDTO.Add(servico);
         }
