@@ -201,7 +201,7 @@ namespace MTJM.API.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("PropostaProdutos");
+                    b.ToTable("PropostaProdutos", (string)null);
                 });
 
             modelBuilder.Entity("MTJM.API.Models.Propostas.PropostaServico", b =>
@@ -228,7 +228,7 @@ namespace MTJM.API.Migrations
 
                     b.HasIndex("ServicoId");
 
-                    b.ToTable("PropostaServico");
+                    b.ToTable("PropostaServico", (string)null);
                 });
 
             modelBuilder.Entity("MTJM.API.Models.Servicos.Servico", b =>
@@ -262,7 +262,7 @@ namespace MTJM.API.Migrations
                         .WithMany("Clientes")
                         .HasForeignKey("CoordenadorRegionalId");
 
-                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Clientes.Cliente.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("ClienteId")
                                 .HasColumnType("int");
@@ -289,7 +289,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("ClienteId");
 
-                            b1.ToTable("Cliente");
+                            b1.ToTable("Cliente", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ClienteId");
@@ -302,7 +302,7 @@ namespace MTJM.API.Migrations
 
             modelBuilder.Entity("MTJM.API.Models.Funcionarios.CoordenadorRegional", b =>
                 {
-                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Funcionarios.CoordenadorRegional.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("CoordenadorRegionalId")
                                 .HasColumnType("int");
@@ -329,7 +329,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("CoordenadorRegionalId");
 
-                            b1.ToTable("CoordenadorRegional");
+                            b1.ToTable("CoordenadorRegional", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CoordenadorRegionalId");
@@ -346,7 +346,7 @@ namespace MTJM.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
+                    b.OwnsOne("MTJM.API.Models.Funcionarios.Orcamentista.Endereco#MTJM.API.Models.Enderecos.Endereco", "Endereco", b1 =>
                         {
                             b1.Property<int>("OrcamentistaId")
                                 .HasColumnType("int");
@@ -373,7 +373,7 @@ namespace MTJM.API.Migrations
 
                             b1.HasKey("OrcamentistaId");
 
-                            b1.ToTable("Orcamentista");
+                            b1.ToTable("Orcamentista", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrcamentistaId");

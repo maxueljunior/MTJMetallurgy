@@ -1,11 +1,14 @@
-﻿using MTJM.API.Models.Produtos;
+﻿using FluentValidation;
+using MTJM.API.DTOs.Propostas;
+using MTJM.API.Models.Produtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace MTJM.API.Models.Propostas;
 
-public class PropostaProduto
+public class PropostaProduto : Base
 {
     #region Properties
+    public const double MIN_QUANTIDADE = 0.00;
     public int PropostaId { get; private set; }
     public Proposta Proposta { get; private set; }
     public int ProdutoId { get; private set; }
@@ -27,6 +30,27 @@ public class PropostaProduto
         Preco = preco;
         Descricao = descricao;
         Lucratividade = lucratividade;
+
+        ValidateModel();
     }
     #endregion
+
+    #region Methods
+    protected override void ValidateModel() => ValidationResult = new PropostaProdutoValidator().Validate(this);
+    #endregion
+}
+
+public class PropostaProdutoValidator : AbstractValidator<PropostaProduto>
+{
+    public PropostaProdutoValidator()
+    {
+        RuleFor(pp => pp.Quantidade)
+            .NotEmpty()
+            .WithMessage("Quantidade is required");
+
+        RuleFor(pp => pp.Quantidade)
+            .LessThanOrEqualTo(PropostaProduto.MIN_QUANTIDADE)
+            .WithMessage($"Quantidade Less Than {PropostaProduto.MIN_QUANTIDADE}");
+
+    }   
 }

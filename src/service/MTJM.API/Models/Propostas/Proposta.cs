@@ -1,9 +1,12 @@
 ﻿using FluentValidation;
+using MTJM.API.DTOs.Produtos;
 using MTJM.API.DTOs.Propostas;
+using MTJM.API.Migrations;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Produtos;
 using MTJM.API.Models.Servicos;
+using MTJM.API.Services.Propostas;
 
 namespace MTJM.API.Models.Propostas;
 
@@ -64,6 +67,32 @@ public class Proposta : Base
         RecalcularValorTotal(valorTotal);
 
         ValidateModel();
+    }
+    public void RemoveProduto(CreatePropostaProdutoDTO requestProdutoDTO)
+    {
+        var produtoProposta = PropostaProdutos.FirstOrDefault(p => p.ProdutoId == requestProdutoDTO.ProdutoId);
+        RemoveProduto(produtoProposta);
+    }
+
+    public void RemoveProduto(int produtoId)
+    {
+        var produtoProposta = PropostaProdutos.FirstOrDefault(p => p.ProdutoId == produtoId);
+        RemoveProduto(produtoProposta);
+    }
+    private void RemoveProduto(PropostaProduto produtoProposta)
+    {
+        PropostaProdutos.Remove(produtoProposta);
+        var valorTotal = (decimal)(produtoProposta.Quantidade * double.Parse(produtoProposta.Preco.ToString()));
+        RecalcularValorTotal(-valorTotal);
+        ValidateModel();
+    }
+
+    public void RemoveServico(CreatePropostaServicoDTO requestServicoDTO)
+    {
+        var propostaServico = PropostaServicos.FirstOrDefault(s => s.ServicoId == requestServicoDTO.ServicoId);
+        PropostaServicos.Remove(propostaServico);
+        var valorTotal = propostaServico.Horas * propostaServico.PrecoPorHora;
+        RecalcularValorTotal(-valorTotal);
     }
     #endregion
 }

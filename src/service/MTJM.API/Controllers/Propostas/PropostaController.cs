@@ -52,6 +52,27 @@ public class PropostaController : BaseController
         ValidAndReturn(await _propostaServices.InsertServicoProposta(requestServicoDTO));
     #endregion
 
+    #region PUT - Edit Produto
+    [HttpPut]
+    [Route("EditProduto")]
+    public async Task<IActionResult> EditProduto(CreatePropostaProdutoDTO requestProdutoDTO)
+        => ValidAndReturn(await _propostaServices.UpdatePropostaProduto(requestProdutoDTO));
+    #endregion
+
+    #region PUT - Edit Servico
+    [HttpPut]
+    [Route("EditServico")]
+    public async Task<IActionResult> EditServico(CreatePropostaServicoDTO requestServicoDTO)
+        => ValidAndReturn(await _propostaServices.UpdatePropostaServico(requestServicoDTO));
+    #endregion
+
+    #region DELETE - Delete Produto
+    [HttpDelete]
+    [Route("DeleteProduto/{propostaId:int}/{produtoId:int}")]
+    public async Task<IActionResult> DeleteProduto(int propostaId, int produtoId)
+        => ValidAndReturnSuccess(await _propostaServices.DeletePropostaProduto(propostaId, produtoId));
+    #endregion
+
     #endregion
 
     #region Private Methods
@@ -64,6 +85,17 @@ public class PropostaController : BaseController
             return CustomResponse(proposta.Errors);
 
         return CustomResponse(proposta);
+    }
+
+    private IActionResult ValidAndReturnSuccess(PropostaDTO proposta)
+    {
+        if (!proposta.ValidationResult.IsValid)
+            return CustomResponse(proposta.ValidationResult);
+
+        if (proposta.Errors.Any())
+            return CustomResponse(proposta.Errors);
+
+        return CustomResponse();
     }
     #endregion
 }

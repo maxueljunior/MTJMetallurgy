@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MTJM.API.DTOs.Produtos;
 using MTJM.API.DTOs.Propostas;
+using MTJM.API.DTOs.Servicos;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Produtos;
@@ -127,6 +128,98 @@ public class PropostaServices : IPropostaServices
     }
     #endregion
 
+    #region Update Produto Proposta
+    public async Task<PropostaDTO> UpdatePropostaProduto(CreatePropostaProdutoDTO requestProdutoDTO)
+    {
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(requestProdutoDTO.PropostaId);
+        PropostaDTO responseDTO = new PropostaDTO();
+
+        if (proposta is null)
+            responseDTO.AddError("Proposta Not Found");
+
+        var produto = await GetProduto(requestProdutoDTO.ProdutoId);
+
+        if (produto is null)
+            responseDTO.AddError("Produto Not Found");
+
+        if(produto is not null && (proposta.PropostaProdutos.FirstOrDefault(p => p.ProdutoId == requestProdutoDTO.ProdutoId) is null))
+            responseDTO.AddError($"Produto {produto.Descricao} Not Found in Proposta");
+
+        if (responseDTO.Errors.Any())
+            return responseDTO;
+
+        proposta.RemoveProduto(requestProdutoDTO);
+
+        proposta.AddProduto(CreatePropostaProduto(produto, requestProdutoDTO));
+
+        await _propostaRepository.Edit(proposta);
+
+        responseDTO = proposta;
+
+        return responseDTO;
+    }
+    #endregion
+
+    #region Update Proposta Servico
+    public async Task<PropostaDTO> UpdatePropostaServico(CreatePropostaServicoDTO requestServicoDTO)
+    {
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(requestServicoDTO.PropostaId);
+        PropostaDTO responseDTO = new PropostaDTO();
+
+        if (proposta is null)
+            responseDTO.AddError("Proposta Not Found");
+
+        var servico = await GetServico(requestServicoDTO.ServicoId);
+
+        if (servico is null)
+            responseDTO.AddError("Servico Not Found");
+
+        if (servico is not null && (proposta.PropostaServicos.FirstOrDefault(s => s.ServicoId == requestServicoDTO.ServicoId) is null))
+            responseDTO.AddError($"Servico {servico.Descricao} Not Found in Proposta");
+
+        if (responseDTO.Errors.Any())
+            return responseDTO;
+
+        proposta.RemoveServico(requestServicoDTO);
+
+        proposta.AddServico(CreatePropostaServico(servico, requestServicoDTO));
+
+        await _propostaRepository.Edit(proposta);
+
+        responseDTO = proposta;
+        return responseDTO;
+    }
+    #endregion
+
+    #region Delete Proposta Produto
+    public async Task<PropostaDTO> DeletePropostaProduto(int propostaId, int produtoId)
+    {
+        var proposta = await _propostaRepository.GetByIdAllProdutosAndServicos(propostaId);
+        PropostaDTO responseDTO = new PropostaDTO();
+
+        if (proposta is null)
+            responseDTO.AddError("Proposta Not Found");
+
+        var produto = await GetProduto(produtoId);
+
+        if (produto is null)
+            responseDTO.AddError("Produto Not Found");
+
+        if (produto is not null && (proposta.PropostaProdutos.FirstOrDefault(p => p.ProdutoId == produtoId) is null))
+            responseDTO.AddError($"Produto {produto.Descricao} Not Found in Proposta");
+
+        if (responseDTO.Errors.Any())
+            return responseDTO;
+
+        proposta.RemoveProduto(produtoId);
+
+        await _propostaRepository.Edit(proposta);
+        
+        responseDTO = proposta;
+        return responseDTO;
+    }
+    #endregion
+
     #endregion
 
     #region Private Methods
@@ -160,6 +253,5 @@ public class PropostaServices : IPropostaServices
             servico.Horas,
             requestServicoDTO.Lucratividade);
     }
-
     #endregion
 }

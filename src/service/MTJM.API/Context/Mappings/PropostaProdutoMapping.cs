@@ -10,6 +10,10 @@ public class PropostaProdutoMapping : IEntityTypeConfiguration<PropostaProduto>
     {
         builder.HasKey(pp => new { pp.PropostaId, pp.ProdutoId });
 
+        builder.Ignore(pp => pp.Id);
+
+        builder.Ignore(pp => pp.ValidationResult);
+
         builder.HasOne(pp => pp.Proposta)
             .WithMany(p => p.PropostaProdutos)
             .HasForeignKey(pp => pp.PropostaId);
