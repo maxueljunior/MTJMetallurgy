@@ -49,8 +49,8 @@ public class PropostaProdutoValidator : AbstractValidator<PropostaProduto>
             .WithMessage("Quantidade is required");
 
         RuleFor(pp => pp.Quantidade)
-            .LessThanOrEqualTo(PropostaProduto.MIN_QUANTIDADE)
-            .WithMessage($"Quantidade Less Than {PropostaProduto.MIN_QUANTIDADE}");
+            .GreaterThanOrEqualTo(PropostaProduto.MIN_QUANTIDADE)
+            .WithMessage($"Quantidade bigger then {PropostaProduto.MIN_QUANTIDADE}");
 
     }   
 }

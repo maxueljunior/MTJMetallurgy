@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MTJM.API.Context;
 using System.Text.Json.Serialization;
 
@@ -20,7 +21,7 @@ public static class ApiConfiguration
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-
+        
         builder.Services.AddEndpointsApiExplorer();
         return builder;
     }

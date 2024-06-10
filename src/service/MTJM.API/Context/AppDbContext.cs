@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Produtos;
@@ -7,7 +9,7 @@ using MTJM.API.Models.Servicos;
 
 namespace MTJM.API.Context;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
     #region Constructor
     public AppDbContext(DbContextOptions<AppDbContext> context) : base(context)
@@ -33,6 +35,8 @@ public class AppDbContext : DbContext
             property.SetColumnType("varchar(100)");
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
     }
     #endregion
 }

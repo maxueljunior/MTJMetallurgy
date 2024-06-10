@@ -85,10 +85,18 @@ public class PropostaServices : IPropostaServices
         if (produto is not null && proposta.PropostaProdutos.FirstOrDefault(prod => prod.ProdutoId == produto.Id) is not null)
             responseDTO.AddError($"Produto {produto.Descricao} has already been inserted");
 
+        var propostaProduto = CreatePropostaProduto(produto, requestProdutoDTO);
+
+        if (!propostaProduto.IsValid())
+        {
+            foreach (var item in propostaProduto.ValidationResult.Errors)
+                responseDTO.AddError(item.ErrorMessage);
+        }
+
         if (responseDTO.Errors.Any())
             return responseDTO;
 
-        proposta.AddProduto(CreatePropostaProduto(produto, requestProdutoDTO));
+        proposta.AddProduto(propostaProduto);
 
         await _propostaRepository.Edit(proposta);
 
@@ -145,12 +153,19 @@ public class PropostaServices : IPropostaServices
         if(produto is not null && (proposta.PropostaProdutos.FirstOrDefault(p => p.ProdutoId == requestProdutoDTO.ProdutoId) is null))
             responseDTO.AddError($"Produto {produto.Descricao} Not Found in Proposta");
 
+        var propostaProduto = CreatePropostaProduto(produto, requestProdutoDTO);
+
+        if (!propostaProduto.IsValid()) { 
+            foreach (var item in propostaProduto.ValidationResult.Errors)
+                responseDTO.AddError(item.ErrorMessage);
+        }
+
         if (responseDTO.Errors.Any())
             return responseDTO;
 
         proposta.RemoveProduto(requestProdutoDTO);
-
-        proposta.AddProduto(CreatePropostaProduto(produto, requestProdutoDTO));
+        
+        proposta.AddProduto(propostaProduto);
 
         await _propostaRepository.Edit(proposta);
 
