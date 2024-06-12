@@ -5,12 +5,12 @@ using MTJM.API.Models.Produtos;
 
 namespace MTJM.API.DTOs.Clientes;
 
-public class RequestCoordenadorRegionalDTO
+public class RequestClienteDTO
 {
     public string Nome { get; set; }
     public string Cnpj { get; set; }
     public Endereco Endereco { get; set; }
 
-    public static implicit operator Cliente(RequestCoordenadorRegionalDTO dto) =>
+    public static implicit operator Cliente(RequestClienteDTO dto) =>
     new Cliente(dto.Nome, dto.Cnpj, dto.Endereco);
 }

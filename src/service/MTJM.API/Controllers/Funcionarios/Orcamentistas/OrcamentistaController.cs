@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MTJM.API.DTOs.Funcionarios.Orcamentistas;
+using MTJM.API.Events;
+using MTJM.API.Listeners.Orcamentista;
 using MTJM.API.Models.Funcionarios;
 
 namespace MTJM.API.Controllers.Funcionarios.Orcamentistas;
@@ -12,14 +14,17 @@ public class OrcamentistaController : BaseController
     #region Properties
     private readonly IOrcamentistaRepository _orcamentistaRepository;
     private readonly ICoordenadorRegionalRepository _coordenadorRegionalRepository;
+    private readonly IDispatcher _dispatcher;
     #endregion
 
     #region Constructor
     public OrcamentistaController(IOrcamentistaRepository orcamentistaRepository,
-        ICoordenadorRegionalRepository coordenadorRegionalRepository)
+        ICoordenadorRegionalRepository coordenadorRegionalRepository,
+        IDispatcher dispatcher = null)
     {
         _orcamentistaRepository = orcamentistaRepository;
         _coordenadorRegionalRepository = coordenadorRegionalRepository;
+        _dispatcher = dispatcher;
     }
     #endregion
 
@@ -71,8 +76,8 @@ public class OrcamentistaController : BaseController
         if (!orcamentista.IsValid()) return CustomResponse(orcamentista.ValidationResult);
 
         CoordenadorRegional crv = await _coordenadorRegionalRepository.GetAll()
-                                                                        .Include(c => c.Orcamentista)
-                                                                        .FirstOrDefaultAsync(c => c.Id == requestDTO.CoordenadorRegionalId);
+            .Include(c => c.Orcamentista)
+            .FirstOrDefaultAsync(c => c.Id == requestDTO.CoordenadorRegionalId);
 
         if (crv is null) {
             AdicionaErros("Coordenador Regional Not Found");
@@ -86,6 +91,7 @@ public class OrcamentistaController : BaseController
         }
 
         OrcamentistaDTO responseDTO = await _orcamentistaRepository.Create(orcamentista);
+        await _dispatcher.Publish(new FuncionarioCreatedEvent(requestDTO.Nome, requestDTO.Sobrenome));
 
         return CustomResponse(responseDTO);
     }

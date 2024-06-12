@@ -9,7 +9,6 @@ public class ClienteController : BaseController
 {
     #region Properties
     private readonly IClienteRepository _clienteRepository;
-
     #endregion
 
     #region Constructor
@@ -60,7 +59,7 @@ public class ClienteController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> Create(RequestCoordenadorRegionalDTO requestDTO)
+    public async Task<IActionResult> Create(RequestClienteDTO requestDTO)
     {
         Cliente cliente = requestDTO;
 
@@ -75,7 +74,7 @@ public class ClienteController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
-    public async Task<IActionResult> Edit(int id, RequestCoordenadorRegionalDTO requestDTO)
+    public async Task<IActionResult> Edit(int id, RequestClienteDTO requestDTO)
     {
         var cliente = await _clienteRepository.GetById(id);
 
