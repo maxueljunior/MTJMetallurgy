@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MTJM.API.DTOs.Clientes;
+using MTJM.API.Events;
+using MTJM.API.Events.Cliente;
 using MTJM.API.Models.Clientes;
 
 namespace MTJM.API.Controllers.Clientes;
@@ -9,12 +11,15 @@ public class ClienteController : BaseController
 {
     #region Properties
     private readonly IClienteRepository _clienteRepository;
+    private readonly IDispatcher _dispatcher;
     #endregion
 
     #region Constructor
-    public ClienteController(IClienteRepository clienteRepository)
+    public ClienteController(IClienteRepository clienteRepository,
+        IDispatcher dispatcher)
     {
         _clienteRepository = clienteRepository;
+        _dispatcher = dispatcher;
     }
     #endregion
 
@@ -65,7 +70,15 @@ public class ClienteController : BaseController
 
         if (!cliente.IsValid()) return CustomResponse(cliente.ValidationResult);
 
+        if (string.IsNullOrEmpty(requestDTO.Username))
+        {
+            AdicionaErros("Username is required!");
+            return CustomResponse();
+        }
+
         CoordenadorRegionalDTO responseDTO = await _clienteRepository.Create(cliente);
+
+        await _dispatcher.Publish(new ClienteCreatedEvent(requestDTO.Username));
 
         return CustomResponse(responseDTO);
     }

@@ -6,6 +6,7 @@ using MTJM.API.Context.Repositories.Produtos;
 using MTJM.API.Context.Repositories.Propostas;
 using MTJM.API.Context.Repositories.Servicos;
 using MTJM.API.Events;
+using MTJM.API.Events.Cliente;
 using MTJM.API.Listeners;
 using MTJM.API.Listeners.Funcionario;
 using MTJM.API.Listeners.Orcamentista;
@@ -40,6 +41,8 @@ public static class DependencyInjectionConfiguration
         #region Events
         builder.Services.AddTransient<IListener<FuncionarioCreatedEvent>, FuncionarioCreatedEventListener>();
         builder.Services.AddTransient<IListenerBase>(f => f.GetService<IListener<FuncionarioCreatedEvent>>());
+        builder.Services.AddTransient<IListener<ClienteCreatedEvent>, ClienteCreatedEventListener>();
+        builder.Services.AddTransient<IListenerBase>(c => c.GetService<IListener<ClienteCreatedEvent>>());
         builder.Services.AddTransient<IDispatcher, Dispatcher>();
         #endregion
 

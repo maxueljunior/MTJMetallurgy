@@ -10,6 +10,7 @@ public class RequestClienteDTO
     public string Nome { get; set; }
     public string Cnpj { get; set; }
     public Endereco Endereco { get; set; }
+    public string? Username { get; set; }
 
     public static implicit operator Cliente(RequestClienteDTO dto) =>
     new Cliente(dto.Nome, dto.Cnpj, dto.Endereco);

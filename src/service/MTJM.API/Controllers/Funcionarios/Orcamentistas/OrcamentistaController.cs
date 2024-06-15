@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MTJM.API.Attributes;
 using MTJM.API.DTOs.Funcionarios.Orcamentistas;
 using MTJM.API.Events;
 using MTJM.API.Listeners.Orcamentista;
@@ -33,6 +35,7 @@ public class OrcamentistaController : BaseController
     #region Get All
     [HttpGet]
     [Route("GetAll")]
+    [ClaimsAuthorize("Admin, CRV, Orcamentista", "Ler")]
     public IActionResult GetAll()
     {
         var responseDTO = new List<OrcamentistaDTO>();

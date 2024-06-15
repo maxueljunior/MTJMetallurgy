@@ -25,9 +25,15 @@ public class ClaimsAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
             return;
         }
         
-        var claim = user.Claims.FirstOrDefault(c => c.Type == _claimType && c.Value.Contains(_claimValue));
+        // TO DO Verificar se o usuário e Admin e caso ele for ele passa direto e não precisa deixar
+        // passar para a validação de baixo....
+        // Também olhar a possibilidade de também utilizar Roles para fazer essa verificação para que isso
+        // Fique mais facil do que ficar utilizando claims
+        
+        //var claim = user.Claims.FirstOrDefault(c => c.Type == _claimType && c.Value.Contains(_claimValue));
+        var claim = user.Claims.FirstOrDefault(c => _claimType.Contains(c.Type) && c.Value.Contains(_claimValue));
 
-        if(claim is null)
+        if (claim is null)
             context.Result = new ForbidResult();
     }
 }

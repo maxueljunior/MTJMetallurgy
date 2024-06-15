@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MTJM.API.DTOs.Funcionarios.CoordenadorRegionals;
+using MTJM.API.Events;
+using MTJM.API.Listeners.Orcamentista;
 using MTJM.API.Models.Funcionarios;
 
 namespace MTJM.API.Controllers.Funcionarios.CoordenadorRegionals;
@@ -10,13 +12,15 @@ public class CoordenadorRegionalController : BaseController
 {
     #region Properties
     private readonly ICoordenadorRegionalRepository _coordenadorRegionalRepository;
-
+    private readonly IDispatcher _dispatcher;
     #endregion
 
     #region Constructor
-    public CoordenadorRegionalController(ICoordenadorRegionalRepository coordenadorRegionalRepository)
+    public CoordenadorRegionalController(ICoordenadorRegionalRepository coordenadorRegionalRepository,
+        IDispatcher dispatcher)
     {
         _coordenadorRegionalRepository = coordenadorRegionalRepository;
+        _dispatcher = dispatcher;
     }
     #endregion
 
@@ -68,7 +72,7 @@ public class CoordenadorRegionalController : BaseController
         if (!crv.IsValid()) return CustomResponse(crv.ValidationResult);
 
         OrcamentistaDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
-
+        await _dispatcher.Publish(new FuncionarioCreatedEvent(crv.Nome, crv.Sobrenome));
         return CustomResponse(responseDTO);
     }
     #endregion
