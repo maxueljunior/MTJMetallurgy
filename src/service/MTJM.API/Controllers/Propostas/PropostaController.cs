@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MTJM.API.Attributes;
 using MTJM.API.DTOs.Produtos;
 using MTJM.API.DTOs.Propostas;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
+using MTJM.API.Models.Permissions;
 using MTJM.API.Models.Produtos;
 using MTJM.API.Models.Propostas;
 using MTJM.API.Models.Servicos;
@@ -30,6 +32,7 @@ public class PropostaController : BaseController
     #region POST - Create
     [HttpPost]
     [Route("Create")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> Create(CreatePropostaDTO requestDTO)
     {
         var proposta = await _propostaServices.CreateProposta(requestDTO);
@@ -41,6 +44,7 @@ public class PropostaController : BaseController
     #region POST - Insert a Produto
     [HttpPost]
     [Route("InsertProduto")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> InsertProduto(CreatePropostaProdutoDTO requestProdutoDTO) => 
         ValidAndReturn(await _propostaServices.InsertProdutoProposta(requestProdutoDTO));
     #endregion
@@ -48,6 +52,7 @@ public class PropostaController : BaseController
     #region POST - Insert a Servico
     [HttpPost]
     [Route("InsertServico")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> InsertServico(CreatePropostaServicoDTO requestServicoDTO) =>
         ValidAndReturn(await _propostaServices.InsertServicoProposta(requestServicoDTO));
     #endregion
@@ -55,6 +60,7 @@ public class PropostaController : BaseController
     #region PUT - Edit Produto
     [HttpPut]
     [Route("EditProduto")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Update))]
     public async Task<IActionResult> EditProduto(CreatePropostaProdutoDTO requestProdutoDTO)
         => ValidAndReturn(await _propostaServices.UpdatePropostaProduto(requestProdutoDTO));
     #endregion
@@ -62,6 +68,7 @@ public class PropostaController : BaseController
     #region PUT - Edit Servico
     [HttpPut]
     [Route("EditServico")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Update))]
     public async Task<IActionResult> EditServico(CreatePropostaServicoDTO requestServicoDTO)
         => ValidAndReturn(await _propostaServices.UpdatePropostaServico(requestServicoDTO));
     #endregion
@@ -69,6 +76,7 @@ public class PropostaController : BaseController
     #region DELETE - Delete Produto
     [HttpDelete]
     [Route("DeleteProduto/{propostaId:int}/{produtoId:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Proposta), nameof(PermissionsValue.Delete))]
     public async Task<IActionResult> DeleteProduto(int propostaId, int produtoId)
         => ValidAndReturnSuccess(await _propostaServices.DeletePropostaProduto(propostaId, produtoId));
     #endregion

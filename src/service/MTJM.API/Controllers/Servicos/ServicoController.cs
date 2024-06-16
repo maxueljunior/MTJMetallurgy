@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MTJM.API.Attributes;
 using MTJM.API.Context;
 using MTJM.API.DTOs.Servicos;
+using MTJM.API.Models.Permissions;
 using MTJM.API.Models.Servicos;
 
 namespace MTJM.API.Controllers.Servicos;
@@ -25,6 +27,7 @@ public class ServicoController : BaseController
     #region Get All
     [HttpGet]
     [Route("GetAll")]
+    [ClaimsAuthorize(nameof(PermissionsType.Servico), nameof(PermissionsValue.Read))]
     public IActionResult GetAll()
     {
         var responseDTO = new List<ServicoDTO>();
@@ -42,6 +45,7 @@ public class ServicoController : BaseController
     #region Get By Id
     [HttpGet]
     [Route("GetById/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Servico), nameof(PermissionsValue.Read))]
     public async Task<IActionResult> GetById(int id)
     {
         var servico = await _servicoRepository.GetById(id);
@@ -61,6 +65,7 @@ public class ServicoController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
+    [ClaimsAuthorize(nameof(PermissionsType.Servico), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> Create(RequestServicoDTO requestDTO)
     {
         Servico servico = requestDTO;
@@ -76,6 +81,7 @@ public class ServicoController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Servico), nameof(PermissionsValue.Update))]
     public async Task<IActionResult> Edit(int id, RequestServicoDTO requestDTO)
     {
         var servico = await _servicoRepository.GetById(id);
@@ -99,6 +105,7 @@ public class ServicoController : BaseController
     #region Delete
     [HttpDelete]
     [Route("Delete/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Servico), nameof(PermissionsValue.Delete))]
     public async Task<IActionResult> Delete(int id)
     {
         var servico = await _servicoRepository.GetById(id);

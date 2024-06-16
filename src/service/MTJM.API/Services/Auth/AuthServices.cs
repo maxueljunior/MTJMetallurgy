@@ -25,6 +25,7 @@ public class AuthServices : IAuthServices
         if (user is not null && await _userManager.CheckPasswordAsync(user, loginDTO.Password))
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
             {
@@ -35,6 +36,11 @@ public class AuthServices : IAuthServices
             foreach (var claim in userClaims)
             {
                 authClaims.Add(claim);
+            }
+
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             var token = GetToken(authClaims);
@@ -62,6 +68,7 @@ public class AuthServices : IAuthServices
         try
         {
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
+            await _userManager.AddToRoleAsync(user, "User");
 
             if (!result.Succeeded)
                 return false;

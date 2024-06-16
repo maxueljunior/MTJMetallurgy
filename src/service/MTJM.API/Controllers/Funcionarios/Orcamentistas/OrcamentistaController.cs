@@ -7,6 +7,7 @@ using MTJM.API.DTOs.Funcionarios.Orcamentistas;
 using MTJM.API.Events;
 using MTJM.API.Listeners.Orcamentista;
 using MTJM.API.Models.Funcionarios;
+using MTJM.API.Models.Permissions;
 
 namespace MTJM.API.Controllers.Funcionarios.Orcamentistas;
 
@@ -35,7 +36,7 @@ public class OrcamentistaController : BaseController
     #region Get All
     [HttpGet]
     [Route("GetAll")]
-    [ClaimsAuthorize("Admin, CRV, Orcamentista", "Ler")]
+    [ClaimsAuthorize(nameof(PermissionsType.Orcamentista), nameof(PermissionsValue.Read))]
     public IActionResult GetAll()
     {
         var responseDTO = new List<OrcamentistaDTO>();
@@ -53,6 +54,7 @@ public class OrcamentistaController : BaseController
     #region Get By Id
     [HttpGet]
     [Route("GetById/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Orcamentista), nameof(PermissionsValue.Read))]
     public async Task<IActionResult> GetById(int id)
     {
         var orcamentista = await _orcamentistaRepository.GetById(id);
@@ -72,6 +74,7 @@ public class OrcamentistaController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
+    [ClaimsAuthorize(nameof(PermissionsType.Orcamentista), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> Create(RequestOrcamentistaDTO requestDTO)
     {
         Orcamentista orcamentista = requestDTO;
@@ -103,6 +106,7 @@ public class OrcamentistaController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Orcamentista), nameof(PermissionsValue.Update))]
     public async Task<IActionResult> Edit(int id, RequestOrcamentistaDTO requestDTO)
     {
         var orcamentista = await _orcamentistaRepository.GetById(id);
@@ -126,6 +130,7 @@ public class OrcamentistaController : BaseController
     #region Delete
     [HttpDelete]
     [Route("Delete/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Orcamentista), nameof(PermissionsValue.Delete))]
     public async Task<IActionResult> Delete(int id)
     {
         var orcamentista = await _orcamentistaRepository.GetById(id);

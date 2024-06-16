@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MTJM.API.Attributes;
 using MTJM.API.DTOs.Clientes;
 using MTJM.API.Events;
 using MTJM.API.Events.Cliente;
 using MTJM.API.Models.Clientes;
+using MTJM.API.Models.Permissions;
 
 namespace MTJM.API.Controllers.Clientes;
 
@@ -28,6 +30,7 @@ public class ClienteController : BaseController
     #region Get All
     [HttpGet]
     [Route("GetAll")]
+    [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Read))]
     public IActionResult GetAll()
     {
         var responseDTO = new List<CoordenadorRegionalDTO>();
@@ -45,6 +48,7 @@ public class ClienteController : BaseController
     #region Get By Id
     [HttpGet]
     [Route("GetById/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Read))]
     public async Task<IActionResult> GetById(int id)
     {
         var cliente = await _clienteRepository.GetById(id);
@@ -64,6 +68,7 @@ public class ClienteController : BaseController
     #region Create
     [HttpPost]
     [Route("Create")]
+    [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Create))]
     public async Task<IActionResult> Create(RequestClienteDTO requestDTO)
     {
         Cliente cliente = requestDTO;
@@ -87,6 +92,7 @@ public class ClienteController : BaseController
     #region Edit
     [HttpPut]
     [Route("Edit/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Update))]
     public async Task<IActionResult> Edit(int id, RequestClienteDTO requestDTO)
     {
         var cliente = await _clienteRepository.GetById(id);
@@ -110,6 +116,7 @@ public class ClienteController : BaseController
     #region Delete
     [HttpDelete]
     [Route("Delete/{id:int}")]
+    [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Delete))]
     public async Task<IActionResult> Delete(int id)
     {
         var cliente = await _clienteRepository.GetById(id);
