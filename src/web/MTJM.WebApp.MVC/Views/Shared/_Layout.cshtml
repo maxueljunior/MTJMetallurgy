@@ -5,47 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MTJM.WebApp.MVC</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MTJM.WebApp.MVC.styles.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" asp-append-version="true">
 </head>
 <body>
     
-    <div class="row">
-        <div class="col-4 m-0 p-0" style="border: 1px solid green">
-            <ul class="nav flex-column ps-2">
+    <div class="container-fluid">
+        <div class="row">
+
+            <ul class="nav flex-column col-2 col-md-2 col-lg-2 ps-2 text-start nav-sidebar">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Active</a>
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-regular fa-address-card"></i>
+                        <span>Cliente</span>
+                    </a>
+                </li>
+
+                <hr style="margin: 5px 1rem" />
+
+                <li class="nav-item">
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-solid fa-people-arrows"></i>
+                        <span>CRV</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>Orçamentista</span>
+                    </a>
+                </li>
+
+                <hr style="margin: 5px 1rem" />
+
+                <li class="nav-item">
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                        <span>Propostas</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-solid fa-pen-clip"></i>
+                        <span>Produtos</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link text-white m-0" href="#">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Serviços</span>
+                    </a>
                 </li>
             </ul>
-        </div>
 
-        <div class="col-8">
-            <main role="main" class="pb-1">
-                @RenderBody()
-            </main>
+            <div class="col-10 col-md-10 col-lg-10">
+                <main role="main">
+                    @RenderBody()
+                </main>
+
+                <footer class="border-top footer text-muted">
+                    <div>
+                        &copy; 2024 - MTJMetallurgy
+                    </div>
+                </footer>
+            </div>
         </div>
-            
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - MTJM.WebApp.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/02c6aaef30.js" crossorigin="anonymous" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
