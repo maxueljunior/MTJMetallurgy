@@ -1,17 +1,25 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MTJM.WebApp.MVC.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IClaimsHelpers, ClaimsHelpers>();
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Auth/Login";
+        options.Cookie.Name = "MTJMCookie";
     });
 
-builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddHttpClient("ApiClient");
 
 var app = builder.Build();
@@ -20,7 +28,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

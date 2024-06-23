@@ -33,10 +33,16 @@ public class AuthController : BaseController
             return CustomResponse();
         }
 
+        var claims = await _authServices.GetClaims(loginDTO.Username);
+        var roles = await _authServices.GetRoles(loginDTO.Username);
+
         return CustomResponse(new
         {
+            username = loginDTO.Username,
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            expiration = token.ValidTo
+            expiration = token.ValidTo,
+            claims,
+            roles
         });
     }
 

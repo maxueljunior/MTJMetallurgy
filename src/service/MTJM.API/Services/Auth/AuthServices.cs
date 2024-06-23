@@ -51,6 +51,20 @@ public class AuthServices : IAuthServices
         return null;
     }
 
+    public async Task<IEnumerable<Claim>> GetClaims(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+
+        return await _userManager.GetClaimsAsync(user);
+    }
+
+    public async Task<IEnumerable<string>> GetRoles(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+
+        return await _userManager.GetRolesAsync(user);
+    }
+
     public async Task<bool> Register(RegisterDTO registerDTO)
     {
         var userExists = await _userManager.FindByEmailAsync(registerDTO.Email);

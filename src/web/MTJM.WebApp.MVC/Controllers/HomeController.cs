@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MTJM.WebApp.MVC.Helpers;
 using MTJM.WebApp.MVC.Models;
 using System.Diagnostics;
 
@@ -8,11 +9,11 @@ namespace MTJM.WebApp.MVC.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IClaimsHelpers _claimsHelpers;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IClaimsHelpers claimsHelpers)
     {
-        _logger = logger;
+        _claimsHelpers = claimsHelpers;
     }
 
     public IActionResult Index()

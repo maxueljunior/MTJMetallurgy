@@ -1,7 +1,8 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-body {
-    font-family: "Roboto Mono", monospace;
+body, main {
+    font-family: "Poppins", monospace;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -10,8 +11,8 @@ body {
 }
 
 .nav-sidebar {
-    background-color: #6699ff;
-    font-family: "Roboto Mono", monospace;
+    background-color: #101B31;
+    font-family: "Poppins", monospace;
     font-weight: 400;
     word-break: break-all;
     min-height: 100vh;
@@ -22,7 +23,31 @@ body {
     opacity: 0.7;
 }
 
-@media only screen and (max-width: 767px){
+.dropdown-navside {
+    background-color: #101B31 !important;
+    color: white;
+}
+
+.dropdown-navside .dropdown-item {
+    color: white;
+}
+
+.dropdown-navside .dropdown-item:hover {
+    opacity: 0.7;
+}
+
+.wrapper {
+    min-height: 100vh;
+}
+
+.footer {
+    background-color: #101B31;
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+@media only screen and (max-width: 767px) {
     .nav-sidebar{
         display: none !important;
         word-break: break-word;
