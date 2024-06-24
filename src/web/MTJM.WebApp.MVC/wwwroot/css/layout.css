@@ -19,6 +19,13 @@ body, main {
     /*min-width: 180px;*/
 }
 
+.nav-mobile {
+    background-color: #101B31;
+    font-family: "Poppins", monospace;
+    font-weight: 400;
+    word-break: break-all;
+}
+
 .nav-sidebar .nav-item .nav-link:hover{
     opacity: 0.7;
 }
@@ -40,6 +47,11 @@ body, main {
     min-height: 100vh;
 }
 
+.navbar-min-width {
+    display: none !important;
+    background-color: #101B31;
+}
+
 .footer {
     background-color: #101B31;
     color: white;
@@ -49,21 +61,21 @@ body, main {
 
 @media only screen and (max-width: 767px) {
     .nav-sidebar{
-        display: none !important;
+        /*display: none !important;*/
         word-break: break-word;
     }
 }
 
 @media only screen and (max-width: 1024px){
-    .nav-sidebar .nav-item .nav-link{
+/*    .nav-sidebar .nav-item .nav-link{
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 15px !important;
         font-size: 1.3rem;
-    }
+    }*/
 
-    .nav-sidebar .nav-item .nav-link span{
+/*    .nav-sidebar .nav-item .nav-link span{
         display: none;
-    }
+    }*/
 }
