@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MTJM.WebApp.MVC.Handler;
 using MTJM.WebApp.MVC.Helpers;
+using MTJM.WebApp.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IClaimsHelpers, ClaimsHelpers>();
+
+builder.Services.AddTransient<IRequestApiService, RequestApiService>();
+builder.Services.AddTransient<CustomHttpClientHandler>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -19,8 +24,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "MTJMCookie";
     });
 
-
-builder.Services.AddHttpClient("ApiClient");
+builder.Services.AddHttpClient("ApiClient")
+    .ConfigureHttpClient((provider, c) =>
+    {
+        c.BaseAddress = new Uri("https://localhost:7009/api/");
+    })
+    .AddHttpMessageHandler<CustomHttpClientHandler>();
 
 var app = builder.Build();
 

@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MTJM.WebApp.MVC.DTO;
+using MTJM.WebApp.MVC.Handler;
+using MTJM.WebApp.MVC.Helpers;
 using MTJM.WebApp.MVC.Models;
+using MTJM.WebApp.MVC.Services;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -12,11 +16,11 @@ namespace MTJM.WebApp.MVC.Controllers.Auth;
 
 public class AuthController : Controller
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IRequestApiService _requestService;
 
-    public AuthController(IHttpClientFactory httpClientFactory)
+    public AuthController(IRequestApiService requestService)
     {
-        _httpClientFactory = httpClientFactory;
+        _requestService = requestService;
     }
 
     public IActionResult Login()
@@ -32,9 +36,7 @@ public class AuthController : Controller
             return View(loginViewModel);
         }
 
-        var client = _httpClientFactory.CreateClient();
-        var loginData = new StringContent(JsonSerializer.Serialize(loginViewModel), Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("https://localhost:7009/api/Auth/login", loginData);
+        var response = await _requestService.Request("Auth/Login", Method.POST, loginViewModel);
 
         if(response.IsSuccessStatusCode)
         {
