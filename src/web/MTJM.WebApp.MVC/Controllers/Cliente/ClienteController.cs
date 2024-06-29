@@ -9,18 +9,25 @@ namespace MTJM.WebApp.MVC.Controllers.Cliente;
 [Authorize]
 public class ClienteController : Controller
 {
+    #region Properties
     private readonly IRequestApiService _requestApiService;
+    #endregion
 
+    #region Constructors
     public ClienteController(IRequestApiService requestApiService)
     {
         _requestApiService = requestApiService;
     }
+    #endregion
 
+    #region Index
     public IActionResult Index()
     {
         return View();
     }
+    #endregion
 
+    #region GET - GetTableClientes
     [HttpGet]
     public async Task<IActionResult> GetTableClientes()
     {
@@ -39,4 +46,13 @@ public class ClienteController : Controller
 
         return Json(null);
     }
+    #endregion
+
+    #region GET - Create
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+    #endregion
 }

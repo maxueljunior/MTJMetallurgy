@@ -2,6 +2,8 @@
     Layout = "_Layout";
 }
 
+<link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
+
 <div class="card my-2 shadow-lg bg-body-tertiary rounded">
     <div class="card-header">
         <div class="row">
@@ -10,13 +12,18 @@
             </div>
 
             <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
-                <button type="button" class="btn btn-outline-primary">Create Cliente</button>
+                <a class="btn btn-outline-primary" asp-action="Create" asp-controller="Cliente">Create Cliente</a>
             </div>
         </div>
     </div>
     <div class="card-body">
         
-        <partial name="./Partial/_PartialTableClientes"/>
+
+        <div class="row">
+            <div class="col-12">
+                <partial name="./Partial/_PartialTableClientes" />
+            </div>
+        </div>
 
     </div>
 </div>
@@ -24,6 +31,7 @@
 @section Scripts{
     <script src="~/Views/Cliente/Index.cshtml.js"></script>
 }
+
 
 
 

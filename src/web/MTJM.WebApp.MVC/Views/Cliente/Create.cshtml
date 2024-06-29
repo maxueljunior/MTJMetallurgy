@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="card my-2 shadow-lg bg-body-tertiary rounded">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 col-md-6 align-items-center">
+                <h1 class="fs-2 fw-normal">Create Cliente</h1>
+            </div>
+
+            <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
+                <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Cliente">Back Index</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        
+        <form class="row g-3 p-2 needs-validation" novalidate>
+
+            <div class="col-12 col-md-4">
+                <label for="inputNome">Nome</label>
+                <input type="text" class="form-control" placeholder="Write a Razão Social..." id="inputNome" required />
+            </div>
+
+            <div class="col-12 col-md-4">
+                <label for="inputCnpj">CNPJ</label>
+                <input type="text" class="form-control" placeholder="Write a CNPJ..." id="inputCnpj"/>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <label for="inputCnpj">Username</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">&#64</span>
+                    <input type="text" class="form-control" placeholder="Write a Username to system" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            
+
+        </form>
+
+    </div>
+</div>
