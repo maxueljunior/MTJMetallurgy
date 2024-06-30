@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MTJM.WebApp.MVC.DTO;
+using MTJM.WebApp.MVC.Models;
 using MTJM.WebApp.MVC.Services;
 using System.Text.Json;
 
@@ -53,6 +54,25 @@ public class ClienteController : Controller
     public IActionResult Create()
     {
         return View();
+    }
+    #endregion
+
+    #region POST - Create
+    [HttpPost]
+    public async Task<IActionResult> Create(ClienteViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+            return View(viewModel);
+
+        var response = await _requestApiService.Request("Cliente/Create", Method.POST, viewModel);
+
+        if (response.IsSuccessStatusCode) { 
+            TempData["CreateSuccess"] = "Cliente create successfully!";
+            return RedirectToAction("Index", "Cliente");
+        }
+
+        ViewBag.ErrorCreate = "Unexpected error!";
+        return View(viewModel);
     }
     #endregion
 }

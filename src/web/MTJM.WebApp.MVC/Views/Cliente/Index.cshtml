@@ -4,6 +4,11 @@
 
 <link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
 
+@if (TempData["CreateSuccess"] is not null)
+{
+    <input id="messageSuccess" value="@TempData["CreateSuccess"]" hidden />
+}
+
 <div class="card my-2 shadow-lg bg-body-tertiary rounded">
     <div class="card-header">
         <div class="row">

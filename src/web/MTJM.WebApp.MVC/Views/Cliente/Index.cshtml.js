@@ -1,4 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", async (ev) => {
+    LoadMessageIfCreate();
     await InitializeDataTables();
 })
 
@@ -42,4 +43,12 @@ async function InitializeDataTables() {
             { className: "text-center", width: "5%", targets: [0,1] }
         ]
     });
+}
+
+function LoadMessageIfCreate() {
+    let messageCreate = document.querySelector("#messageSuccess");
+
+    if (messageCreate) {
+        toastr.success(messageCreate.value, "Success");
+    }
 }

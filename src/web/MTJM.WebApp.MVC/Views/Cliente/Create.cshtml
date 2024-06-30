@@ -1,5 +1,12 @@
-﻿@{
+﻿@model ClienteViewModel
+
+@{
     Layout = "_Layout";
+}
+
+@if(ViewBag.ErrorCreate is not null)
+{
+    <input id="errorMessage" value="@ViewBag.ErrorCreate" hidden />
 }
 
 <div class="card my-2 shadow-lg bg-body-tertiary rounded">
@@ -16,28 +23,59 @@
     </div>
     <div class="card-body">
         
-        <form class="row g-3 p-2 needs-validation" novalidate>
+        <form class="row g-3 p-2" method="post" asp-controller="Cliente" asp-action="Create">
 
             <div class="col-12 col-md-4">
-                <label for="inputNome">Nome</label>
-                <input type="text" class="form-control" placeholder="Write a Razão Social..." id="inputNome" required />
+                <label asp-for="Nome">Nome</label>
+                <input type="text" class="form-control" placeholder="Razão Social..." id="inputNome" asp-for="Nome" />
+                <span class="text-danger" asp-validation-for="Nome"></span>
             </div>
 
             <div class="col-12 col-md-4">
-                <label for="inputCnpj">CNPJ</label>
-                <input type="text" class="form-control" placeholder="Write a CNPJ..." id="inputCnpj"/>
+                <label asp-for="CNPJ">CNPJ</label>
+                <input type="text" class="form-control" placeholder="CNPJ..." id="inputCnpj" asp-for="CNPJ"/>
+                <span class="text-danger" asp-validation-for="CNPJ"></span>
             </div>
 
             <div class="col-12 col-md-4">
-                <label for="inputCnpj">Username</label>
+                <label asp-for="Username">Username</label>
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">&#64</span>
-                    <input type="text" class="form-control" placeholder="Write a Username to system" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" placeholder="Username to system..." aria-label="Username" aria-describedby="basic-addon1" asp-for="Username">
                 </div>
+                <span class="text-danger" asp-validation-for="Username"></span>
             </div>
-            
+
+            <div class="col-6 col-md-3">
+                <label asp-for="Endereco.Cep"></label>
+                <input type="text" class="form-control" placeholder="Cep..." asp-for="Endereco.Cep" />
+                <span class="text-danger" asp-validation-for="Endereco.Cep"></span>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <label asp-for="Endereco.Logradouro"></label>
+                <input type="text" class="form-control" placeholder="Logradouro..." asp-for="Endereco.Logradouro" />
+            </div>
+
+            <div class="col-6 col-md-3">
+                <label asp-for="Endereco.Bairro"></label>
+                <input type="text" class="form-control" placeholder="Bairro..." asp-for="Endereco.Bairro"/>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <label asp-for="Endereco.Localidade"></label>
+                <input type="text" class="form-control" placeholder="Localidade..." asp-for="Endereco.Localidade" />
+            </div>
+
+            <div class="col-12 text-end align-self-end">
+                <button class="btn btn-success" type="submit">Create</button>
+            </div>
 
         </form>
 
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/Views/Cliente/Create.cshtml.js"></script>
+}
