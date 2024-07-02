@@ -58,6 +58,11 @@ public class AuthServices : IAuthServices
         return await _userManager.GetClaimsAsync(user);
     }
 
+    public async Task<IdentityUser> GetUser(string username)
+    {
+        return await _userManager.FindByNameAsync(username);
+    }
+
     public async Task<IEnumerable<string>> GetRoles(string username)
     {
         var user = await _userManager.FindByNameAsync(username);

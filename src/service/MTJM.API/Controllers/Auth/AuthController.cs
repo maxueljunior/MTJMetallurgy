@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -48,7 +49,6 @@ public class AuthController : BaseController
 
     [HttpPost]
     [Route("register")]
-    //[ClaimsAuthorize("Admin", "Escrever,Ler")]
     public async Task<IActionResult> Register(RegisterDTO registerDTO)
     {
         if(!await _authServices.Register(registerDTO))
@@ -58,5 +58,19 @@ public class AuthController : BaseController
         }
 
         return CustomResponse(new AuthenticationDTO { Status = "Success", Message = "User created successfully!" });
+    }
+
+    [HttpGet]
+    [Route("existsUsername/{username}")]
+    [Authorize]
+    public async Task<IActionResult> ExistsUsername(string username)
+    {
+        if(await _authServices.GetUser(username) is not null)
+        {
+            AdicionaErros("Username already exists");
+            return CustomResponse();
+        }
+
+        return CustomResponse(new { UserExists = false });
     }
 }

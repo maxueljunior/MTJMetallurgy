@@ -1,4 +1,5 @@
-﻿using MTJM.API.DTOs.Auth;
+﻿using Microsoft.AspNetCore.Identity;
+using MTJM.API.DTOs.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -10,4 +11,5 @@ public interface IAuthServices
     Task<bool> Register(RegisterDTO registerDTO);
     Task<IEnumerable<Claim>> GetClaims(string username);
     Task<IEnumerable<string>> GetRoles(string username);
+    Task<IdentityUser> GetUser(string username);
 }

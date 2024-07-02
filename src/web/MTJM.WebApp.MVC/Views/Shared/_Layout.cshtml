@@ -22,6 +22,8 @@
 </head>
 <body>
     
+    @Html.AntiForgeryToken()
+
     <div class="container-fluid" style="min-width: 320px">
         <div class="row">
 
@@ -231,6 +233,20 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/02c6aaef30.js" crossorigin="anonymous" asp-append-version="true"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
+
+    <script text="text/javascript" asp-append-version="true">
+
+        function GetBaseURL() {
+            return window.location.origin;
+        }
+
+        function GetRequestVerificationToken(){
+            let verificationToken = document.querySelector('input[name="__RequestVerificationToken"]')
+            return verificationToken.value;
+        }
+
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

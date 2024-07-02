@@ -23,7 +23,7 @@
     </div>
     <div class="card-body">
         
-        <form class="row g-3 p-2" method="post" asp-controller="Cliente" asp-action="Create">
+        <form id="formCliente" class="row g-3 p-2" method="post" asp-controller="Cliente" asp-action="Create">
 
             <div class="col-12 col-md-4">
                 <label asp-for="Nome">Nome</label>
@@ -41,7 +41,7 @@
                 <label asp-for="Username">Username</label>
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">&#64</span>
-                    <input type="text" class="form-control" placeholder="Username to system..." aria-label="Username" aria-describedby="basic-addon1" asp-for="Username">
+                    <input id="inputUsername" type="text" class="form-control" placeholder="Username to system..." aria-label="Username" aria-describedby="basic-addon1" asp-for="Username">
                 </div>
                 <span class="text-danger" asp-validation-for="Username"></span>
             </div>
@@ -68,7 +68,7 @@
             </div>
 
             <div class="col-12 text-end align-self-end">
-                <button class="btn btn-success" type="submit">Create</button>
+                <button id="btnSubmitForm" class="btn btn-success" type="submit">Create</button>
             </div>
 
         </form>

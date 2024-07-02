@@ -98,5 +98,27 @@ public class AuthController : Controller
 
         return RedirectToAction("Login", "Auth");
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExistsUsername([FromBody] string username)
+    {
+        if (string.IsNullOrEmpty(username))
+            return Json(new CustomResponse().WithError("Username is required."));
+
+        var response = await _requestService.Request($"auth/existsUsername/{username}", Method.GET);
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        
+
+        if (response.IsSuccessStatusCode)
+        {
+            return Json(new CustomResponse().WithSuccess());
+        }
+          
+        var customResponse = JsonHelper.JsonToObject<CustomResponse>(responseContent);
+
+        return Json(new CustomResponse().WithErrors(customResponse));
+    }
 }
 
