@@ -4,9 +4,14 @@
 
 <link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
 
-@if (TempData["CreateSuccess"] is not null)
+@if (TempData["SuccessMessage"] is not null)
 {
-    <input id="messageSuccess" value="@TempData["CreateSuccess"]" hidden />
+    <input id="successMessage" value="@TempData["SuccessMessage"]" hidden />
+}
+
+@if(TempData["ErrorMessage"] is not null)
+{
+    <input id="errorMessage" value="@TempData["ErrorMessage"]" hidden />
 }
 
 <div class="card my-2 shadow-lg bg-body-tertiary rounded">

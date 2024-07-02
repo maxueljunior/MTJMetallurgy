@@ -1,0 +1,48 @@
+﻿@model ClienteDTO
+
+<form id="formCliente" class="row g-3 p-2" method="post" asp-controller="Cliente" asp-action="Edit">
+
+    <div class="col-12 col-md-4">
+        <label asp-for="Nome">Nome</label>
+        <input type="text" class="form-control" placeholder="Razão Social..." id="inputNome" asp-for="Nome" readonly/>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="Cnpj">CNPJ</label>
+        <input type="text" class="form-control" placeholder="CNPJ..." id="inputCnpj" asp-for="Cnpj" readonly />
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label>Username</label>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">&#64</span>
+            <input id="inputUsername" type="text" class="form-control" placeholder="Username to system..." aria-label="Username" aria-describedby="basic-addon1" readonly>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Cep"></label>
+        <input type="text" class="form-control" placeholder="Cep..." asp-for="Endereco.Cep" />
+        <span class="text-danger" asp-validation-for="Endereco.Cep"></span>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Logradouro"></label>
+        <input type="text" class="form-control" placeholder="Logradouro..." asp-for="Endereco.Logradouro" />
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Bairro"></label>
+        <input type="text" class="form-control" placeholder="Bairro..." asp-for="Endereco.Bairro" />
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Localidade"></label>
+        <input type="text" class="form-control" placeholder="Localidade..." asp-for="Endereco.Localidade" />
+    </div>
+
+    <div class="col-12 text-end align-self-end">
+        <button id="btnSubmitForm" class="btn btn-success" type="submit">Edit</button>
+    </div>
+
+</form>

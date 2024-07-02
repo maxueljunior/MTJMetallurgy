@@ -1,8 +1,9 @@
 ﻿document.addEventListener("DOMContentLoaded", async (ev) => {
-    LoadMessageIfCreate();
+    LoadMessages();
     await InitializeDataTables();
 })
 
+//#region Initialize Data Tables
 async function InitializeDataTables() {
     new DataTable("#tableCliente", {
         async: true,
@@ -10,7 +11,7 @@ async function InitializeDataTables() {
         paging: true,
         pagingType: 'simple_numbers',
         ajax: {
-            url: "Cliente/GetTableClientes",
+            url: GetBaseURL() + "/Cliente/GetTableClientes",
             dataSrc: ""
         },
         columns: [
@@ -18,7 +19,7 @@ async function InitializeDataTables() {
                 data: null,
                 render: function (data, type, row, meta) {
                     if (data)
-                        return '<button class="btn btn-info"><i class="fa fa-pen"/></button>';
+                        return `<a href="${GetBaseURL()}/Cliente/Edit/${row.id}" class="btn btn-info"><i class="fa fa-pen"/></a>`;
                 },
                 orderable: false,
             },
@@ -26,7 +27,7 @@ async function InitializeDataTables() {
                 data: null,
                 render: function (data, type, row, meta) {
                     if (data)
-                        return '<button class="btn btn-danger"><i class="fa fa-trash"/></button>';
+                        return '<a class="btn btn-danger"><i class="fa fa-trash"/></a>';
                 },
                 orderable: false,
             },
@@ -44,11 +45,19 @@ async function InitializeDataTables() {
         ]
     });
 }
+//#end region
 
-function LoadMessageIfCreate() {
-    let messageCreate = document.querySelector("#messageSuccess");
+//#region Load Messages
+function LoadMessages() {
+    let successMessage = document.querySelector("#successMessage");
+    let errorMessage = document.querySelector("#errorMessage");
 
-    if (messageCreate) {
-        toastr.success(messageCreate.value, "Success");
+    if (successMessage) {
+        toastr.success(successMessage.value, "Success");
+    }
+
+    if (errorMessage) {
+        toastr.error(errorMessage.value, "Error");
     }
 }
+//#end region

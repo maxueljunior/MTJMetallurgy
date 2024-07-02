@@ -1,17 +1,14 @@
-﻿@{
-    Layout = "_Layout";
-}
+﻿@model ClienteDTO
 
-@if(ViewBag.ErrorCreate is not null)
-{
-    <input id="errorMessage" value="@ViewBag.ErrorCreate" hidden />
+@{
+    Layout = "_Layout";
 }
 
 <div class="card my-2 shadow-lg bg-body-tertiary rounded">
     <div class="card-header">
         <div class="row">
             <div class="col-6 col-md-6 align-items-center">
-                <h1 class="fs-2 fw-normal">Create Cliente</h1>
+                <h1 class="fs-2 fw-normal">Edit Cliente</h1>
             </div>
 
             <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
@@ -20,12 +17,8 @@
         </div>
     </div>
     <div class="card-body">
-        
-        <partial name="./Partial/_PartialFormCreateCliente"/>
+
+        <partial name="./Partial/_PartialFormEditCliente" model="@Model"/>
 
     </div>
 </div>
-
-@section Scripts{
-    <script src="~/Views/Cliente/Create.cshtml.js"></script>
-}

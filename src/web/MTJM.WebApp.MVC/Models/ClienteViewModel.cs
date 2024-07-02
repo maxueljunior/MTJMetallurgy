@@ -4,6 +4,8 @@ namespace MTJM.WebApp.MVC.Models;
 
 public class ClienteViewModel
 {
+    public string Id { get; set; }
+
     [Required(ErrorMessage = "{0} is required.")]
     [StringLength(100, ErrorMessage = "Characters lenght not in {2} and {1}", MinimumLength = 5)]
     public string Nome { get; set; }
