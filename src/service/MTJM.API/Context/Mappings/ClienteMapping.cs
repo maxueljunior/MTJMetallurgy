@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MTJM.API.Models.Clientes;
+using MTJM.API.Models.Funcionarios;
 
 namespace MTJM.API.Context.Mappings;
 
@@ -34,6 +35,10 @@ public class ClienteMapping : IEntityTypeConfiguration<Cliente>
         builder.HasOne(e => e.CoordenadorRegional)
             .WithMany(e => e.Clientes)
             .HasForeignKey(e => e.CoordenadorRegionalId);
+
+        builder.HasOne(c => c.UserAccount)
+            .WithOne(c => c.Cliente)
+            .HasForeignKey<Cliente>(c => c.UserAccountId);
 
         builder.ToTable("Cliente");
     }

@@ -3,6 +3,7 @@ using MTJM.API.DTOs.Clientes;
 using MTJM.API.Models.Enderecos;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Propostas;
+using MTJM.API.Models.User;
 
 namespace MTJM.API.Models.Clientes;
 
@@ -19,6 +20,10 @@ public class Cliente : Base
     public int? CoordenadorRegionalId { get; private set; } // Required foreign key property
     public CoordenadorRegional? CoordenadorRegional { get; set; } // Required reference navigation to principal
     public ICollection<Proposta> Propostas { get; set; }
+
+    public string UserAccountId { get; set; }
+    public ApplicationUser UserAccount { get; set; }
+
     #endregion
 
     #region Constructor

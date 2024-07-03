@@ -6,10 +6,11 @@ using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Produtos;
 using MTJM.API.Models.Propostas;
 using MTJM.API.Models.Servicos;
+using MTJM.API.Models.User;
 
 namespace MTJM.API.Context;
 
-public class AppDbContext : IdentityDbContext<IdentityUser>
+public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     #region Constructor
     public AppDbContext(DbContextOptions<AppDbContext> context) : base(context)
