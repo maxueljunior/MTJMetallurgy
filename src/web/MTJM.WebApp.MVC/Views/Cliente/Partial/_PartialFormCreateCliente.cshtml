@@ -44,6 +44,12 @@
         <input type="text" class="form-control" placeholder="Localidade..." asp-for="Endereco.Localidade" />
     </div>
 
+    <div class="col-6 col-md-4">
+        <label>Coordenador Regional de Vendas</label>
+        <select class="form-select" asp-for="CoordenadorRegionalId" asp-items="@Model.crvs">
+        </select>
+    </div>
+
     <div class="col-12 text-end align-self-end">
         <button id="btnSubmitForm" class="btn btn-success" type="submit">Create</button>
     </div>

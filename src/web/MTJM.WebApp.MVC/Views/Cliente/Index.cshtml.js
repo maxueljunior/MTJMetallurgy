@@ -34,7 +34,7 @@ async function InitializeDataTables() {
             { "data": "nome" },
             { "data": "cnpj" },
             { "data": "endereco.localidade" },
-            { "data": "coordenadorRegionalId" },
+            { "data": "coordenadorRegional" },
         ],
         order: [
             [2, 'asc', '5%']

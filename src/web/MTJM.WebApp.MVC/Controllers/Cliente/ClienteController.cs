@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MTJM.WebApp.MVC.DTO;
 using MTJM.WebApp.MVC.Helpers;
 using MTJM.WebApp.MVC.Models;
@@ -52,9 +54,12 @@ public class ClienteController : Controller
 
     #region GET - Create
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var viewModel = new ClienteViewModel();
+        viewModel = await PopulateCrvs(viewModel);
+
+        return View(viewModel);
     }
     #endregion
 
@@ -63,6 +68,8 @@ public class ClienteController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ClienteViewModel viewModel)
     {
+        viewModel = await PopulateCrvs(viewModel);
+
         if (!ModelState.IsValid)
             return View(viewModel);
 
@@ -93,8 +100,8 @@ public class ClienteController : Controller
 
         if (response.IsSuccessStatusCode)
         {
-            var Cliente = JsonHelper.JsonToObject<ClienteDTO>(responseContent);
-            return View(Cliente);
+            var Cliente = JsonHelper.JsonToObject<ClienteViewModel>(responseContent);
+            return View(await PopulateCrvs(Cliente));
         }
 
         var CustomResponse = JsonHelper.JsonToObject<CustomResponse>(responseContent);
@@ -108,9 +115,54 @@ public class ClienteController : Controller
     #region POST - Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(ClienteDTO viewModel)
+    public async Task<IActionResult> Edit(ClienteViewModel viewModel)
     {
-        return View();
+        viewModel = await PopulateCrvs(viewModel);
+
+        if(!ModelState.IsValid)
+            return View(viewModel);
+
+        var requestModel = new EditClienteViewModel
+        {
+            CoordenadorRegionalId = viewModel.CoordenadorRegionalId.Value,
+            Endereco = viewModel.Endereco
+        };
+
+        var response = await _requestApiService.Request($"Cliente/Edit/{viewModel.Id}", Method.PUT, requestModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            TempData["SuccessMessage"] = "Cliente edited successfully!";
+            return RedirectToAction("Index", "Cliente");
+        }
+
+        ViewBag.ErrorEdit = "Unexpected error!";
+
+        return View(viewModel);
     }
+    #endregion
+
+    #region Private Methods
+
+    #region Populate Crvs
+    private async Task<ClienteViewModel> PopulateCrvs(ClienteViewModel viewModel)
+    {
+        var response = await _requestApiService.Request("CoordenadorRegional/GetAll", Method.GET);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var Crvs = JsonHelper.JsonToObject<IEnumerable<CoordenadorRegionalDTO>>(responseContent);
+            viewModel.crvs = Crvs.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = string.Concat(c.Nome, " ", c.Sobrenome)
+            });
+        }
+
+        return viewModel;
+    }
+    #endregion
+
     #endregion
 }

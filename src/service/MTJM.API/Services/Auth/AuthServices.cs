@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MTJM.API.DTOs.Auth;
+using MTJM.API.Models.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -9,10 +10,10 @@ namespace MTJM.API.Services.Auth;
 
 public class AuthServices : IAuthServices
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
 
-    public AuthServices(UserManager<IdentityUser> userManager, IConfiguration configuration)
+    public AuthServices(UserManager<ApplicationUser> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -58,7 +59,7 @@ public class AuthServices : IAuthServices
         return await _userManager.GetClaimsAsync(user);
     }
 
-    public async Task<IdentityUser> GetUser(string username)
+    public async Task<ApplicationUser> GetUser(string username)
     {
         return await _userManager.FindByNameAsync(username);
     }
@@ -77,7 +78,7 @@ public class AuthServices : IAuthServices
         if (userExists is not null)
             return false;
 
-        IdentityUser user = new()
+        ApplicationUser user = new()
         {
             Email = registerDTO.Email,
             SecurityStamp = Guid.NewGuid().ToString(),

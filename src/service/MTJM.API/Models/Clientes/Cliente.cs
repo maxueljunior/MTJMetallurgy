@@ -29,11 +29,12 @@ public class Cliente : Base
     #region Constructor
     private Cliente() { }
 
-    public Cliente(string nome, string cnpj, Endereco endereco)
+    public Cliente(string nome, string cnpj, Endereco endereco, int coordenadorRegionalId)
     {
         Nome = nome;
         Cnpj = cnpj;
         Endereco = endereco;
+        CoordenadorRegionalId = coordenadorRegionalId;
         SetActive(true);
 
         ValidateModel();
@@ -48,11 +49,10 @@ public class Cliente : Base
         Ativo = ativo;
     }
 
-    public void Update(RequestClienteDTO requestDTO)
+    public void Update(EditClienteDTO requestDTO)
     {
-        Nome = requestDTO.Nome;
-        Cnpj = requestDTO.Cnpj;
         Endereco = requestDTO.Endereco;
+        CoordenadorRegionalId = requestDTO.CoordenadorRegionalId;
 
         ValidateModel();
     }

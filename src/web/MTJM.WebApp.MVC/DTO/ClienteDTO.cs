@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Json.Serialization;
+
 namespace MTJM.WebApp.MVC.DTO;
 
 public class ClienteDTO
@@ -9,4 +12,5 @@ public class ClienteDTO
     public EnderecoDTO Endereco { get; set; }
     public bool Ativo { get; set; }
     public int? CoordenadorRegionalId { get; set; }
+    public string CoordenadorRegional { get; set; }
 }

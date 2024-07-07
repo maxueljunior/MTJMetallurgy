@@ -11,7 +11,8 @@ public class RequestClienteDTO
     public string Cnpj { get; set; }
     public Endereco Endereco { get; set; }
     public string? Username { get; set; }
+    public int CoordenadorRegionalId { get; set; }
 
     public static implicit operator Cliente(RequestClienteDTO dto) =>
-    new Cliente(dto.Nome, dto.Cnpj, dto.Endereco);
+    new Cliente(dto.Nome, dto.Cnpj, dto.Endereco, dto.CoordenadorRegionalId);
 }

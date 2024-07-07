@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MTJM.API.Context;
+using MTJM.API.Models.User;
 using System.Text;
 
 namespace MTJM.API.Configurations;
@@ -10,7 +11,7 @@ public static class JwtConfiguration
 {
     public static WebApplicationBuilder AddJwtConfiguration(this WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

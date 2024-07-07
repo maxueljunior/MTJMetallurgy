@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MTJM.API.Attributes;
 using MTJM.API.DTOs.Clientes;
 using MTJM.API.Events;
 using MTJM.API.Events.Cliente;
 using MTJM.API.Models.Clientes;
+using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Permissions;
+using MTJM.API.Services.Auth;
 
 namespace MTJM.API.Controllers.Clientes;
 
@@ -13,15 +16,21 @@ public class ClienteController : BaseController
 {
     #region Properties
     private readonly IClienteRepository _clienteRepository;
+    private readonly ICoordenadorRegionalRepository _coordenadorRegionalRepository;
     private readonly IDispatcher _dispatcher;
+    private readonly IAuthServices _authServices;
     #endregion
 
     #region Constructor
     public ClienteController(IClienteRepository clienteRepository,
-        IDispatcher dispatcher)
+        IDispatcher dispatcher,
+        IAuthServices authServices,
+        ICoordenadorRegionalRepository coordenadorRegionalRepository)
     {
         _clienteRepository = clienteRepository;
         _dispatcher = dispatcher;
+        _authServices = authServices;
+        _coordenadorRegionalRepository = coordenadorRegionalRepository;
     }
     #endregion
 
@@ -33,13 +42,17 @@ public class ClienteController : BaseController
     [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Read))]
     public IActionResult GetAll()
     {
-        var responseDTO = new List<CoordenadorRegionalDTO>();
+        var responseDTO = new List<ClienteDTO>();
 
-        _clienteRepository.GetAll().ToList().ForEach(cliente =>
-        {
-            CoordenadorRegionalDTO p = cliente;
-            responseDTO.Add(p);
-        });
+        _clienteRepository.GetAll()
+            .Where(c => c.Ativo)
+            .Include(c => c.CoordenadorRegional)
+            .ToList()
+            .ForEach(cliente =>
+            {
+                ClienteDTO p = cliente;
+                responseDTO.Add(p);
+            });
 
         return CustomResponse(responseDTO);
     }
@@ -51,7 +64,11 @@ public class ClienteController : BaseController
     [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Read))]
     public async Task<IActionResult> GetById(int id)
     {
-        var cliente = await _clienteRepository.GetById(id);
+        var cliente = _clienteRepository.GetAll()
+            .Where(c => c.Id == id && c.Ativo)
+            .Include(c => c.CoordenadorRegional)
+            .Include(c => c.UserAccount)
+            .FirstOrDefault();
 
         if (cliente is null)
         {
@@ -59,7 +76,7 @@ public class ClienteController : BaseController
             return CustomResponse();
         }
 
-        CoordenadorRegionalDTO responseDTO = cliente;
+        ClienteDTO responseDTO = cliente;
 
         return CustomResponse(responseDTO);
     }
@@ -81,9 +98,18 @@ public class ClienteController : BaseController
             return CustomResponse();
         }
 
-        CoordenadorRegionalDTO responseDTO = await _clienteRepository.Create(cliente);
+        if (await _coordenadorRegionalRepository.GetById(requestDTO.CoordenadorRegionalId) is null)
+        {
+            AdicionaErros("Coordenador Regional Not Found!");
+            return CustomResponse();
+        }
+
 
         await _dispatcher.Publish(new ClienteCreatedEvent(requestDTO.Username));
+
+        var user = await _authServices.GetUser(requestDTO.Username);
+        cliente.UserAccountId = user.Id;
+        ClienteDTO responseDTO = await _clienteRepository.Create(cliente);
 
         return CustomResponse(responseDTO);
     }
@@ -93,7 +119,7 @@ public class ClienteController : BaseController
     [HttpPut]
     [Route("Edit/{id:int}")]
     [ClaimsAuthorize(nameof(PermissionsType.Cliente), nameof(PermissionsValue.Update))]
-    public async Task<IActionResult> Edit(int id, RequestClienteDTO requestDTO)
+    public async Task<IActionResult> Edit(int id, EditClienteDTO requestDTO)
     {
         var cliente = await _clienteRepository.GetById(id);
 
@@ -127,7 +153,9 @@ public class ClienteController : BaseController
             return CustomResponse();
         }
 
-        await _clienteRepository.Delete(id);
+        cliente.SetActive(false);
+
+        await _clienteRepository.Edit(cliente);
 
         return CustomResponse();
     }
