@@ -142,6 +142,31 @@ public class ClienteController : Controller
     }
     #endregion
 
+    #region POST - Delete
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (id == 0)
+            return Json(new CustomResponse().WithError("Id is required"));
+
+        try
+        {
+            var response = await _requestApiService.Request($"Cliente/Delete/{id}", Method.DELETE);
+            if (response.IsSuccessStatusCode) {
+                return Json(new CustomResponse().WithSuccess());
+            }
+
+            var customResponse = JsonHelper.JsonToObject<CustomResponse>(await response.Content.ReadAsStringAsync());
+
+            return Json(new CustomResponse().WithErrors(customResponse));
+        }
+        catch (Exception) {
+            return Json(new CustomResponse().WithError("Occurred a unexpected error!"));
+        }
+    }
+    #endregion
+
     #region Private Methods
 
     #region Populate Crvs

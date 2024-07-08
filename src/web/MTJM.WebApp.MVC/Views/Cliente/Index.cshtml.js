@@ -1,11 +1,13 @@
-﻿document.addEventListener("DOMContentLoaded", async (ev) => {
+﻿let datatables;
+
+document.addEventListener("DOMContentLoaded", async (ev) => {
     LoadMessages();
     await InitializeDataTables();
 })
 
 //#region Initialize Data Tables
 async function InitializeDataTables() {
-    new DataTable("#tableCliente", {
+    datatables = new DataTable("#tableCliente", {
         async: true,
         responsive: true,
         paging: true,
@@ -26,8 +28,11 @@ async function InitializeDataTables() {
             {
                 data: null,
                 render: function (data, type, row, meta) {
+
+                    var nomeClienteCompleto = `${row.nome} - ${row.cnpj}`
+
                     if (data)
-                        return '<a class="btn btn-danger"><i class="fa fa-trash"/></a>';
+                        return `<a class="btn btn-danger" onclick="LoadingSwalfire(${row.id}, '${nomeClienteCompleto}')"><i class="fa fa-trash"/></a>`;
                 },
                 orderable: false,
             },
@@ -59,5 +64,53 @@ function LoadMessages() {
     if (errorMessage) {
         toastr.error(errorMessage.value, "Error");
     }
+}
+//#end region
+
+//#region
+async function LoadingSwalfire(id, nomeCompleto) {
+
+    var swalfire = await Swal.fire({
+        title: "Are you sure?",
+        text: "The Cliente that will be deleted " + nomeCompleto,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    });
+
+    let responseJSON;
+
+    if (swalfire.isConfirmed) {
+
+        const response = await fetch(GetBaseURL() + '/Cliente/Delete/' + id, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": GetRequestVerificationToken()
+            },
+        })
+
+        responseJSON = await response.json();
+    }
+
+    if (responseJSON.status === 200) {
+        Swal.fire({
+            title: "Deleted!",
+            text: "Your Cliente has been deleted.",
+            icon: "success"
+        });
+        datatables.ajax.reload();
+        return;
+    }
+
+    Swal.fire({
+        title: "Error!",
+        text: responseJSON.errors.Messages[0],
+        icon: "error"
+    })
+
+    return;
 }
 //#end region
