@@ -41,10 +41,8 @@ public class AuthController : Controller
         if(response.IsSuccessStatusCode)
         {
             var responseContent = await response.Content.ReadAsStringAsync();
-            var token = JsonSerializer.Deserialize<TokenDTO>(responseContent, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+
+            var token = JsonHelper.JsonToObject<TokenDTO>(responseContent);
 
             HttpContext.Response.Cookies.Append("MTJMCookie", token.Token, new CookieOptions
             {
@@ -66,7 +64,7 @@ public class AuthController : Controller
 
             foreach(var claim in token.Claims)
             {
-                claims.Add(claim);
+                claims.Add(new Claim(claim.Type, claim.Value));
             }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

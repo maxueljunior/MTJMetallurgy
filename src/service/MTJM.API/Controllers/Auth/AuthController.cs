@@ -34,7 +34,16 @@ public class AuthController : BaseController
             return CustomResponse();
         }
 
+        List<ClaimDTO> claimsDTO = new();
         var claims = await _authServices.GetClaims(loginDTO.Username);
+
+        foreach (var claim in claims) {
+            claimsDTO.Add(new ClaimDTO
+            {
+                Type = claim.Type,
+                Value = claim.Value,
+            });
+        }
         var roles = await _authServices.GetRoles(loginDTO.Username);
 
         return CustomResponse(new
@@ -42,7 +51,7 @@ public class AuthController : BaseController
             username = loginDTO.Username,
             token = new JwtSecurityTokenHandler().WriteToken(token),
             expiration = token.ValidTo,
-            claims,
+            claims = claimsDTO,
             roles
         });
     }

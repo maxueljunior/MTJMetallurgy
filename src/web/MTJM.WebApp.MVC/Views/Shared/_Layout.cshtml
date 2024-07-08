@@ -2,6 +2,7 @@
     var userName = _claimsHelper.GetUsername();
     var userRoles = _claimsHelper.GetRoles();
     var token = _claimsHelper.GetToken();
+    var claims = _claimsHelper.GetClaims();
 }
 
 <!DOCTYPE html>
@@ -38,13 +39,19 @@
                     <div class="collapse navbar-collapse mt-2 row align-items-start" id="navbarNavDropdown">
                         <div class="col-6 border-end">
                             <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Cliente">
-                                        <i class="fa-regular fa-address-card"></i>
-                                        <span>Cliente</span>
-                                    </a>
-                                </li>
-                                <hr style="margin: 5px 40% 5px 0px; color: white" />
+
+                                @if(claims.Where(c => c.Type == PermissionsType.Cliente.ToString()).Any()){
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Cliente">
+                                            <i class="fa-regular fa-address-card"></i>
+                                            <span>Cliente</span>
+                                        </a>
+                                    </li>
+                                    <hr style="margin: 5px 40% 5px 0px; color: white" />
+
+                                }
+
                                 <li class="nav-item">
                                     <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                         <i class="fa-solid fa-people-arrows"></i>
@@ -159,14 +166,19 @@
 
                 <hr style="margin: 5px 1rem; color: white" />
 
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" asp-action="Index" asp-controller="Cliente">
-                        <i class="fa-regular fa-address-card d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Cliente</span>
-                    </a>
-                </li>
+                @if (claims.Where(c => c.Type == PermissionsType.Cliente.ToString()).Any())
+                {
 
-                <hr style="margin: 5px 1rem; color: white" />
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" asp-action="Index" asp-controller="Cliente">
+                            <i class="fa-regular fa-address-card d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Cliente</span>
+                        </a>
+                    </li>
+
+                    <hr style="margin: 5px 1rem; color: white" />
+
+                }
 
                 <li class="nav-item">
                     <a class="nav-link text-white m-0" href="#">
