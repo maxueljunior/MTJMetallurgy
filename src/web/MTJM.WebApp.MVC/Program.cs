@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IClaimsHelpers, ClaimsHelpers>();
+builder.Services.AddScoped<ClaimsAuthorizeFilter>();
 
 builder.Services.AddTransient<IRequestApiService, RequestApiService>();
 builder.Services.AddTransient<CustomHttpClientHandler>();
