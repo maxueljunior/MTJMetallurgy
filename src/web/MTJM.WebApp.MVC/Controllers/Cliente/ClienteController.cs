@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MTJM.WebApp.MVC.Attributes;
 using MTJM.WebApp.MVC.DTO;
 using MTJM.WebApp.MVC.Helpers;
 using MTJM.WebApp.MVC.Models;
@@ -25,6 +26,7 @@ public class ClienteController : Controller
     #endregion
 
     #region Index
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Read)]
     public IActionResult Index()
     {
         return View();
@@ -54,6 +56,7 @@ public class ClienteController : Controller
 
     #region GET - Create
     [HttpGet]
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Create)]
     public async Task<IActionResult> Create()
     {
         var viewModel = new ClienteViewModel();
@@ -66,6 +69,7 @@ public class ClienteController : Controller
     #region POST - Create
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Create)]
     public async Task<IActionResult> Create(ClienteViewModel viewModel)
     {
         viewModel = await PopulateCrvs(viewModel);
@@ -87,6 +91,7 @@ public class ClienteController : Controller
 
     #region GET - Edit
     [HttpGet]
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Update)]
     public async Task<IActionResult> Edit(int id) { 
 
         if(id < 0)
@@ -115,6 +120,7 @@ public class ClienteController : Controller
     #region POST - Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Update)]
     public async Task<IActionResult> Edit(ClienteViewModel viewModel)
     {
         viewModel = await PopulateCrvs(viewModel);
@@ -145,6 +151,7 @@ public class ClienteController : Controller
     #region POST - Delete
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [ClaimsAuthorize(PermissionsType.Cliente, PermissionValue.Delete)]
     public async Task<IActionResult> Delete(int id)
     {
         if (id == 0)

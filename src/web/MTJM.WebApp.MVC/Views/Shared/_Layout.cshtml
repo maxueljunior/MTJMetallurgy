@@ -3,8 +3,15 @@
     var userRoles = _claimsHelper.GetRoles();
     var token = _claimsHelper.GetToken();
     var claims = _claimsHelper.GetClaims();
-}
 
+    bool UserHaveAccess(PermissionsType permissionsType)
+    {
+        if (userRoles.Contains("Admin") || claims.Where(c => c.Type == permissionsType.ToString()).Any())
+            return true;
+
+        return false;
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,8 +47,8 @@
                         <div class="col-6 border-end">
                             <ul class="navbar-nav">
 
-                                @if(claims.Where(c => c.Type == PermissionsType.Cliente.ToString()).Any()){
-
+                                @if (UserHaveAccess(PermissionsType.Cliente))
+                                {
                                     <li class="nav-item">
                                         <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Cliente">
                                             <i class="fa-regular fa-address-card"></i>
@@ -49,41 +56,58 @@
                                         </a>
                                     </li>
                                     <hr style="margin: 5px 40% 5px 0px; color: white" />
-
                                 }
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
-                                        <i class="fa-solid fa-people-arrows"></i>
-                                        <span>CRV</span>
-                                    </a>
-                                </li>
+                                @if (UserHaveAccess(PermissionsType.CRV))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                            <i class="fa-solid fa-people-arrows"></i>
+                                            <span>CRV</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if(UserHaveAccess(PermissionsType.Orcamentista)){
                                 <li class="nav-item">
                                     <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                         <i class="fa-solid fa-user-pen"></i>
                                         <span>Orçamentista</span>
                                     </a>
                                 </li>
+                                
                                 <hr style="margin: 5px 40% 5px 0px; color: white" />
-                                <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
-                                        <i class="fa-solid fa-hand-holding-dollar"></i>
-                                        <span>Proposta</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
-                                        <i class="fa-solid fa-pen-clip"></i>
-                                        <span>Produtos</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
-                                        <i class="fa-regular fa-clock"></i>
-                                        <span>Serviços</span>
-                                    </a>
-                                </li>
-                                <hr style="margin: 5px 40% 5px 0px; color: white" />
+
+                                }
+
+                                @if(UserHaveAccess(PermissionsType.Proposta)){
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                                            <span>Proposta</span>
+                                        </a>
+                                    </li>
+                                }
+
+
+                                @if(UserHaveAccess(PermissionsType.Produto)){
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                            <i class="fa-solid fa-pen-clip"></i>
+                                            <span>Produtos</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if(UserHaveAccess(PermissionsType.Servico)){
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                            <i class="fa-regular fa-clock"></i>
+                                            <span>Serviços</span>
+                                        </a>
+                                    </li>
+                                    <hr style="margin: 5px 40% 5px 0px; color: white" />
+                                }
                             </ul>
                         </div>
 
@@ -166,7 +190,7 @@
 
                 <hr style="margin: 5px 1rem; color: white" />
 
-                @if (claims.Where(c => c.Type == PermissionsType.Cliente.ToString()).Any())
+                @if (UserHaveAccess(PermissionsType.Cliente))
                 {
 
                     <li class="nav-item">
@@ -180,42 +204,59 @@
 
                 }
 
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" href="#">
-                        <i class="fa-solid fa-people-arrows d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">CRV</span>
-                    </a>
-                </li>
+                @if (UserHaveAccess(PermissionsType.CRV))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" href="#">
+                            <i class="fa-solid fa-people-arrows d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">CRV</span>
+                        </a>
+                    </li>
+                }
 
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" href="#">
-                        <i class="fa-solid fa-user-pen d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Orçamentista</span>
-                    </a>
-                </li>
+                @if (UserHaveAccess(PermissionsType.Orcamentista))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" href="#">
+                            <i class="fa-solid fa-user-pen d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Orçamentista</span>
+                        </a>
+                    </li>
+                
 
-                <hr style="margin: 5px 1rem; color: white" />
+                    <hr style="margin: 5px 1rem; color: white" />
 
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" href="#">
-                        <i class="fa-solid fa-hand-holding-dollar d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Propostas</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" href="#">
-                        <i class="fa-solid fa-pen-clip d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Produtos</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white m-0" href="#">
-                        <i class="fa-regular fa-clock d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
-                        <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Serviços</span>
-                    </a>
-                </li>
+                }
 
-                <hr style="margin: 5px 1rem; color: white" />
+                @if(UserHaveAccess(PermissionsType.Proposta)){
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" href="#">
+                            <i class="fa-solid fa-hand-holding-dollar d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Propostas</span>
+                        </a>
+                    </li>
+                }
+
+                @if(UserHaveAccess(PermissionsType.Produto)){
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" href="#">
+                            <i class="fa-solid fa-pen-clip d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Produtos</span>
+                        </a>
+                    </li>
+                }
+
+                @if(UserHaveAccess(PermissionsType.Servico)){
+                    <li class="nav-item">
+                        <a class="nav-link text-white m-0" href="#">
+                            <i class="fa-regular fa-clock d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
+                            <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Serviços</span>
+                        </a>
+                    </li>
+
+                    <hr style="margin: 5px 1rem; color: white" />
+                }
+
             </ul>
 
             <div class="wrapper col-12 col-md-10 col-lg-10">
