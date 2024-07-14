@@ -9,4 +9,6 @@ public interface IClaimsHelpers
     IEnumerable<string> GetRoles();
     string GetUsername();
     IEnumerable<ClaimDTO> GetClaims();
+    bool UserHaveAccess(PermissionsType permissionsType);
+    bool UserHaveAccess(PermissionsType permissionsType, PermissionValue permissionValue);
 }

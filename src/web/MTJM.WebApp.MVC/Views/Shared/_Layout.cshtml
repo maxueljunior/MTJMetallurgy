@@ -3,14 +3,6 @@
     var userRoles = _claimsHelper.GetRoles();
     var token = _claimsHelper.GetToken();
     var claims = _claimsHelper.GetClaims();
-
-    bool UserHaveAccess(PermissionsType permissionsType)
-    {
-        if (userRoles.Contains("Admin") || claims.Where(c => c.Type == permissionsType.ToString()).Any())
-            return true;
-
-        return false;
-    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +39,7 @@
                         <div class="col-6 border-end">
                             <ul class="navbar-nav">
 
-                                @if (UserHaveAccess(PermissionsType.Cliente))
+                                @if (_claimsHelper.UserHaveAccess(PermissionsType.Cliente))
                                 {
                                     <li class="nav-item">
                                         <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Cliente">
@@ -58,17 +50,17 @@
                                     <hr style="margin: 5px 40% 5px 0px; color: white" />
                                 }
 
-                                @if (UserHaveAccess(PermissionsType.CRV))
+                                @if (_claimsHelper.UserHaveAccess(PermissionsType.CRV))
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="CoordenadorRegional">
                                             <i class="fa-solid fa-people-arrows"></i>
                                             <span>CRV</span>
                                         </a>
                                     </li>
                                 }
 
-                                @if(UserHaveAccess(PermissionsType.Orcamentista)){
+                                @if(_claimsHelper.UserHaveAccess(PermissionsType.Orcamentista)){
                                 <li class="nav-item">
                                     <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                         <i class="fa-solid fa-user-pen"></i>
@@ -80,7 +72,7 @@
 
                                 }
 
-                                @if(UserHaveAccess(PermissionsType.Proposta)){
+                                @if(_claimsHelper.UserHaveAccess(PermissionsType.Proposta)){
                                     <li class="nav-item">
                                         <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                             <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -90,7 +82,7 @@
                                 }
 
 
-                                @if(UserHaveAccess(PermissionsType.Produto)){
+                                @if(_claimsHelper.UserHaveAccess(PermissionsType.Produto)){
                                     <li class="nav-item">
                                         <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                             <i class="fa-solid fa-pen-clip"></i>
@@ -99,7 +91,7 @@
                                     </li>
                                 }
 
-                                @if(UserHaveAccess(PermissionsType.Servico)){
+                                @if(_claimsHelper.UserHaveAccess(PermissionsType.Servico)){
                                     <li class="nav-item">
                                         <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
                                             <i class="fa-regular fa-clock"></i>
@@ -190,7 +182,7 @@
 
                 <hr style="margin: 5px 1rem; color: white" />
 
-                @if (UserHaveAccess(PermissionsType.Cliente))
+                @if (_claimsHelper.UserHaveAccess(PermissionsType.Cliente))
                 {
 
                     <li class="nav-item">
@@ -204,17 +196,17 @@
 
                 }
 
-                @if (UserHaveAccess(PermissionsType.CRV))
+                @if (_claimsHelper.UserHaveAccess(PermissionsType.CRV))
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-white m-0" href="#">
+                        <a class="nav-link text-white m-0" asp-action="Index" asp-controller="CoordenadorRegional">
                             <i class="fa-solid fa-people-arrows d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
                             <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">CRV</span>
                         </a>
                     </li>
                 }
 
-                @if (UserHaveAccess(PermissionsType.Orcamentista))
+                @if (_claimsHelper.UserHaveAccess(PermissionsType.Orcamentista))
                 {
                     <li class="nav-item">
                         <a class="nav-link text-white m-0" href="#">
@@ -228,7 +220,7 @@
 
                 }
 
-                @if(UserHaveAccess(PermissionsType.Proposta)){
+                @if(_claimsHelper.UserHaveAccess(PermissionsType.Proposta)){
                     <li class="nav-item">
                         <a class="nav-link text-white m-0" href="#">
                             <i class="fa-solid fa-hand-holding-dollar d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
@@ -237,7 +229,7 @@
                     </li>
                 }
 
-                @if(UserHaveAccess(PermissionsType.Produto)){
+                @if(_claimsHelper.UserHaveAccess(PermissionsType.Produto)){
                     <li class="nav-item">
                         <a class="nav-link text-white m-0" href="#">
                             <i class="fa-solid fa-pen-clip d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
@@ -246,7 +238,7 @@
                     </li>
                 }
 
-                @if(UserHaveAccess(PermissionsType.Servico)){
+                @if(_claimsHelper.UserHaveAccess(PermissionsType.Servico)){
                     <li class="nav-item">
                         <a class="nav-link text-white m-0" href="#">
                             <i class="fa-regular fa-clock d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
@@ -297,6 +289,35 @@
         function GetRequestVerificationToken(){
             let verificationToken = document.querySelector('input[name="__RequestVerificationToken"]')
             return verificationToken.value;
+        }
+
+        async function VerifiyUserHaveAccess(permissionType, permissionValue) {
+            const response = await fetch(GetBaseURL() + '/Auth/UserHaveAccess?permissionType=' + permissionType + '&permissionValue=' + permissionValue, {
+                method: "GET",
+                headers: {
+                    "Content-Type" : "application/json"
+                }
+            })
+
+            let responseJSON = await response.json();
+
+            if (responseJSON.status === 200)
+                return true;
+
+            return false;
+        }
+
+        function LoadMessages() {
+            let successMessage = document.querySelector("#successMessage");
+            let errorMessage = document.querySelector("#errorMessage");
+
+            if (successMessage) {
+                toastr.success(successMessage.value, "Success");
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage.value, "Error");
+            }
         }
 
     </script>

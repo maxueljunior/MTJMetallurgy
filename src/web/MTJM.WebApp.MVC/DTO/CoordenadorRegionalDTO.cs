@@ -9,4 +9,6 @@ public class CoordenadorRegionalDTO
     public decimal Salario { get; set; }
     public EnderecoDTO Endereco { get; set; }
     public int TempoDeCasa { get; set; }
+    public string NomeOrcamentista { get; set; }
+    public int QuantidadeClientes { get; set; }
 }

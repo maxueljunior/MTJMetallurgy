@@ -2,14 +2,12 @@
     Layout = "_Layout";
 }
 
-<link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
-
 @if (TempData["SuccessMessage"] is not null)
 {
     <input id="successMessage" value="@TempData["SuccessMessage"]" hidden />
 }
 
-@if(TempData["ErrorMessage"] is not null)
+@if (TempData["ErrorMessage"] is not null)
 {
     <input id="errorMessage" value="@TempData["ErrorMessage"]" hidden />
 }
@@ -18,23 +16,23 @@
     <div class="card-header">
         <div class="row">
             <div class="col-6 col-md-6 align-items-center">
-                <h1 class="fs-2 fw-normal">Cliente</h1>
+                <h1 class="fs-2 fw-normal">Coordenador Regional de Vendas</h1>
             </div>
 
             <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
-                @if (_claimsHelper.UserHaveAccess(PermissionsType.Cliente, PermissionValue.Create))
+                @if (_claimsHelper.UserHaveAccess(PermissionsType.CRV, PermissionValue.Create))
                 {
-                    <a class="btn btn-outline-primary" asp-action="Create" asp-controller="Cliente">Create Cliente</a>
+                    <a class="btn btn-outline-primary" asp-action="" asp-controller="">Create CRV</a>
                 }
             </div>
         </div>
     </div>
     <div class="card-body">
-        
+
 
         <div class="row">
             <div class="col-12">
-                <partial name="./Partial/_PartialTableClientes" />
+                <partial name="./Partial/_PartialTableCoordenadorRegional" />
             </div>
         </div>
 
@@ -42,10 +40,5 @@
 </div>
 
 @section Scripts{
-    <script src="~/Views/Cliente/Index.cshtml.js"></script>
+    <script src="~/Views/CoordenadorRegional/Index.cshtml.js"></script>
 }
-
-
-
-
-

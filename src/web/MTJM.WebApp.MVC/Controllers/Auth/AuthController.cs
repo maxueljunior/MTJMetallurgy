@@ -17,10 +17,12 @@ namespace MTJM.WebApp.MVC.Controllers.Auth;
 public class AuthController : Controller
 {
     private readonly IRequestApiService _requestService;
+    private readonly IClaimsHelpers _claimsHelpers;
 
-    public AuthController(IRequestApiService requestService)
+    public AuthController(IRequestApiService requestService, IClaimsHelpers claimsHelpers)
     {
         _requestService = requestService;
+        _claimsHelpers = claimsHelpers;
     }
 
     public IActionResult Login()
@@ -117,6 +119,48 @@ public class AuthController : Controller
         var customResponse = JsonHelper.JsonToObject<CustomResponse>(responseContent);
 
         return Json(new CustomResponse().WithErrors(customResponse));
+    }
+
+    [HttpGet]
+    public IActionResult UserHaveAccess(string permissionType, string permissionValue)
+    {
+        if (string.IsNullOrEmpty(permissionType))
+            return Json(new CustomResponse().WithError("Permission Type is required"));
+
+        if (string.IsNullOrEmpty(permissionValue))
+            return Json(new CustomResponse().WithError("Permission Value is required"));
+
+        if (!ValidatePermission<PermissionsType>(permissionType))
+            return Json(new CustomResponse().WithError($"Permission Type {permissionType} is invalid!"));
+
+        if(!ValidatePermission<PermissionValue>(permissionValue))
+            return Json(new CustomResponse().WithError($"Permission Value {permissionValue} is invalid!"));
+
+        if (_claimsHelpers.GetRoles().Contains("Admin") || _claimsHelpers.GetClaims().Where(c => c.Type == permissionType && c.Value.Contains(permissionValue)).Any())
+            return Json(new CustomResponse().WithSuccess());
+
+        return Json(new CustomResponse().WithError("User don't have access in page or function!"));
+    }
+
+    private bool ValidatePermission<T>(string permission) where T : Enum
+    {
+        var ListValuesPermissions = Enum.GetValues(typeof(T)).Cast<T>();
+
+        bool IsValidPermission = true;
+
+        foreach (var valuePermission in ListValuesPermissions)
+        {
+            if (!valuePermission.ToString().ToLower().Equals(permission.ToLower()))
+            {
+                IsValidPermission = false;
+                continue;
+            }
+
+            IsValidPermission = true;
+            break;
+        }
+
+        return IsValidPermission;
     }
 }
 

@@ -48,4 +48,20 @@ public class ClaimsHelpers : IClaimsHelpers
         return _httpContext?.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
 
     }
+
+    public bool UserHaveAccess(PermissionsType permissionsType)
+    {
+        if (GetRoles().Contains("Admin") || GetClaims().Where(c => c.Type == permissionsType.ToString()).Any())
+            return true;
+
+        return false;
+    }
+
+    public bool UserHaveAccess(PermissionsType permissionsType, PermissionValue permissionValue)
+    {
+        if (GetRoles().Contains("Admin") || GetClaims().Where(c => c.Type == permissionsType.ToString() && c.Value.Contains(permissionValue.ToString())).Any())
+            return true;
+
+        return false;
+    }
 }

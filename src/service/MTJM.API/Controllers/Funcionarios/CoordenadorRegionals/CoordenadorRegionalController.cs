@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MTJM.API.Attributes;
 using MTJM.API.DTOs.Funcionarios.CoordenadorRegionals;
 using MTJM.API.Events;
@@ -34,11 +35,14 @@ public class CoordenadorRegionalController : BaseController
     [ClaimsAuthorize(nameof(PermissionsType.CRV), nameof(PermissionsValue.Read))]
     public IActionResult GetAll()
     {
-        var responseDTO = new List<OrcamentistaDTO>();
+        var responseDTO = new List<CoordenadorRegionalDTO>();
 
-        _coordenadorRegionalRepository.GetAll().ToList().ForEach(crv =>
+        _coordenadorRegionalRepository.GetAll()
+            .Include(c => c.Orcamentista)
+            .Include(c => c.Clientes)
+            .ToList().ForEach(crv =>
         {
-            OrcamentistaDTO p = crv;
+            CoordenadorRegionalDTO p = crv;
             responseDTO.Add(p);
         });
 
@@ -60,7 +64,7 @@ public class CoordenadorRegionalController : BaseController
             return CustomResponse();
         }
 
-        OrcamentistaDTO responseDTO = crv;
+        CoordenadorRegionalDTO responseDTO = crv;
 
         return CustomResponse(responseDTO);
     }
@@ -76,7 +80,7 @@ public class CoordenadorRegionalController : BaseController
 
         if (!crv.IsValid()) return CustomResponse(crv.ValidationResult);
 
-        OrcamentistaDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
+        CoordenadorRegionalDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
         await _dispatcher.Publish(new FuncionarioCreatedEvent(crv.Nome, crv.Sobrenome));
         return CustomResponse(responseDTO);
     }

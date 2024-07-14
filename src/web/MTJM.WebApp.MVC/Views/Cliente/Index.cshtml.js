@@ -1,12 +1,19 @@
 ﻿let datatables;
+let userHaveAccessInDelete;
+let userHaveAccessInUpdate;
 
 document.addEventListener("DOMContentLoaded", async (ev) => {
     LoadMessages();
+
+    userHaveAccessInDelete = await VerifiyUserHaveAccess("Cliente", "Delete");
+    userHaveAccessInUpdate = await VerifiyUserHaveAccess("Cliente", "Update");
+
     await InitializeDataTables();
 })
 
 //#region Initialize Data Tables
 async function InitializeDataTables() {
+
     datatables = new DataTable("#tableCliente", {
         async: true,
         responsive: true,
@@ -46,7 +53,8 @@ async function InitializeDataTables() {
         ],
         scrollX: true,
         columnDefs: [
-            { className: "text-center", width: "5%", targets: [0,1] }
+            { className: "text-center", width: "5%", targets: 0, visible: userHaveAccessInUpdate },
+            { className: "text-center", width: "5%", targets: 1, visible: userHaveAccessInDelete },
         ]
     });
 }
@@ -114,3 +122,4 @@ async function LoadingSwalfire(id, nomeCompleto) {
     return;
 }
 //#end region
+
