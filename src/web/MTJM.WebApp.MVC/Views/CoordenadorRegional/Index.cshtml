@@ -22,7 +22,7 @@
             <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
                 @if (_claimsHelper.UserHaveAccess(PermissionsType.CRV, PermissionValue.Create))
                 {
-                    <a class="btn btn-outline-primary" asp-action="" asp-controller="">Create CRV</a>
+                    <a class="btn btn-outline-primary" asp-action="Create" asp-controller="CoordenadorRegional">Create CRV</a>
                 }
             </div>
         </div>

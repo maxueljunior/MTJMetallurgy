@@ -7,5 +7,5 @@ namespace MTJM.API.Models.User;
 public class ApplicationUser : IdentityUser
 {
     public Cliente Cliente { get; set; }
-    
+    public CoordenadorRegional CoordenadorRegional { get; set; }
 }

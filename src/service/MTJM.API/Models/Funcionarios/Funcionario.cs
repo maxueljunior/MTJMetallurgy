@@ -37,7 +37,7 @@ public class Funcionario : Base
     #endregion
 
     #region Methods
-    protected void SetActive(bool ativo) => Ativo = ativo;
+    public void SetActive(bool ativo) => Ativo = ativo;
     #endregion
 }
 

@@ -7,6 +7,7 @@ using MTJM.API.Events;
 using MTJM.API.Listeners.Orcamentista;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Permissions;
+using MTJM.API.Services.Auth;
 
 namespace MTJM.API.Controllers.Funcionarios.CoordenadorRegionals;
 
@@ -16,14 +17,17 @@ public class CoordenadorRegionalController : BaseController
     #region Properties
     private readonly ICoordenadorRegionalRepository _coordenadorRegionalRepository;
     private readonly IDispatcher _dispatcher;
+    private readonly IAuthServices _authServices;
     #endregion
 
     #region Constructor
     public CoordenadorRegionalController(ICoordenadorRegionalRepository coordenadorRegionalRepository,
-        IDispatcher dispatcher)
+        IDispatcher dispatcher,
+        IAuthServices authServices)
     {
         _coordenadorRegionalRepository = coordenadorRegionalRepository;
         _dispatcher = dispatcher;
+        _authServices = authServices;
     }
     #endregion
 
@@ -40,6 +44,7 @@ public class CoordenadorRegionalController : BaseController
         _coordenadorRegionalRepository.GetAll()
             .Include(c => c.Orcamentista)
             .Include(c => c.Clientes)
+            .Where(c => c.Ativo)
             .ToList().ForEach(crv =>
         {
             CoordenadorRegionalDTO p = crv;
@@ -80,8 +85,15 @@ public class CoordenadorRegionalController : BaseController
 
         if (!crv.IsValid()) return CustomResponse(crv.ValidationResult);
 
-        CoordenadorRegionalDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
         await _dispatcher.Publish(new FuncionarioCreatedEvent(crv.Nome, crv.Sobrenome));
+
+        var user = await _authServices.GetUser(string.Concat(crv.Nome.ToLower(), ".", crv.Sobrenome.ToLower()));
+
+        if (!string.IsNullOrEmpty(user.Id))
+            crv.SetUserAccount(user.Id);
+
+        CoordenadorRegionalDTO responseDTO = await _coordenadorRegionalRepository.Create(crv);
+
         return CustomResponse(responseDTO);
     }
     #endregion
@@ -124,7 +136,8 @@ public class CoordenadorRegionalController : BaseController
             return CustomResponse();
         }
 
-        await _coordenadorRegionalRepository.Delete(id);
+        crv.SetActive(false);
+        await _coordenadorRegionalRepository.Edit(crv);
 
         return CustomResponse();
     }

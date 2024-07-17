@@ -3,6 +3,7 @@ using MTJM.API.DTOs.Funcionarios.CoordenadorRegionals;
 using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Enderecos;
 using MTJM.API.Models.Propostas;
+using MTJM.API.Models.User;
 
 namespace MTJM.API.Models.Funcionarios;
 
@@ -12,6 +13,10 @@ public class CoordenadorRegional : Funcionario
     public ICollection<Proposta> Propostas { get; set; }
     public ICollection<Cliente> Clientes { get; set; }
     public Orcamentista Orcamentista { get; set; }
+
+    public string UserAccountId { get; set; }
+    public ApplicationUser UserAccount { get; set; }
+
     #endregion
 
     #region Constructor
@@ -41,6 +46,10 @@ public class CoordenadorRegional : Funcionario
 
         ValidateModel();
     }
+
+    public void SetUserAccount(string userAccountId)
+        => UserAccountId = userAccountId;
+
     #endregion
 }
 

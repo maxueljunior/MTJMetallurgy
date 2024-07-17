@@ -26,8 +26,8 @@ public class CoordenadorRegionalDTO
             DataContratacao = c.DataContratacao,
             Endereco = c.Endereco,
             TempoDeCasa = c.TempoDeCasa,
-            NomeOrcamentista = string.Concat(c.Orcamentista?.Nome, " ", c.Orcamentista?.Sobrenome),
-            QuantidadeClientes = (int)c.Clientes?.Count
+            NomeOrcamentista = c.Orcamentista is not null ? string.Concat(c.Orcamentista.Nome, " ", c.Orcamentista.Sobrenome) : string.Empty,
+            QuantidadeClientes = c.Clientes is not null ? (int)c.Clientes?.Count : 0
         };
     }
 }

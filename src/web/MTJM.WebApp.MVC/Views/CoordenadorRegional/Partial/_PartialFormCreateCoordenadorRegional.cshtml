@@ -1,0 +1,59 @@
+﻿@using MTJM.WebApp.MVC.Models.Funcionarios
+
+@model CoordenadorRegionalViewModel
+
+<form id="formCrv" class="row g-3 p-2" method="post" asp-controller="CoordenadorRegional" asp-action="Create">
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Nome">Nome</label>
+        <input type="text" class="form-control" placeholder="Nome..." id="inputNome" asp-for="Nome" />
+        <span class="text-danger" asp-validation-for="Nome"></span>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Sobrenome">Sobrenome</label>
+        <input type="text" class="form-control" placeholder="Sobrenome..." asp-for="Sobrenome" />
+        <span class="text-danger" asp-validation-for="Sobrenome"></span>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Salario">Salario</label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="text" class="form-control" aria-label="Salario" asp-for="Salario">
+        </div>
+        <span class="text-danger" asp-validation-for="Salario"></span>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="DataContratacao">Data de Contratação</label>
+        <input asp-for="DataContratacao" class="form-control" type="date" />
+        <span class="text-danger" asp-validation-for="DataContratacao"></span>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Cep"></label>
+        <input type="text" class="form-control" placeholder="Cep..." asp-for="Endereco.Cep" />
+        <span class="text-danger" asp-validation-for="Endereco.Cep"></span>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Logradouro"></label>
+        <input type="text" class="form-control" placeholder="Logradouro..." asp-for="Endereco.Logradouro" />
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Bairro"></label>
+        <input type="text" class="form-control" placeholder="Bairro..." asp-for="Endereco.Bairro" />
+    </div>
+
+    <div class="col-6 col-md-3">
+        <label asp-for="Endereco.Localidade"></label>
+        <input type="text" class="form-control" placeholder="Localidade..." asp-for="Endereco.Localidade" />
+    </div>
+
+    <div class="col-12 text-end align-self-end">
+        <button id="btnSubmitForm" class="btn btn-success" type="submit">Create</button>
+    </div>
+
+</form>

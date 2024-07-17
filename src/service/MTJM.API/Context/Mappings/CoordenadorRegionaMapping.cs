@@ -24,6 +24,10 @@ public class CoordenadorRegionaMapping : IEntityTypeConfiguration<CoordenadorReg
 
         builder.Ignore(c => c.TempoDeCasa);
 
+        builder.HasOne(c => c.UserAccount)
+            .WithOne(c => c.CoordenadorRegional)
+            .HasForeignKey<CoordenadorRegional>(c => c.UserAccountId);
+
         builder.ToTable("CoordenadorRegional");
     }
 }

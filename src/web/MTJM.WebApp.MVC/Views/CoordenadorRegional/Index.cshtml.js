@@ -69,3 +69,51 @@ async function InitializeDataTables() {
     });
 }
 //#endregion
+
+//#region Loading Swal Fire
+async function LoadingSwalfire(id, nomeCompleto) {
+
+    var swalfire = await Swal.fire({
+        title: "Are you sure?",
+        text: "The Coordenador Regional that will be deleted " + nomeCompleto,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    });
+
+    let responseJSON;
+
+    if (swalfire.isConfirmed) {
+
+        const response = await fetch(GetBaseURL() + '/CoordenadorRegional/Delete/' + id, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": GetRequestVerificationToken()
+            },
+        })
+
+        responseJSON = await response.json();
+    }
+
+    if (responseJSON.status === 200) {
+        Swal.fire({
+            title: "Deleted!",
+            text: "Your Coordenador Regional has been deleted.",
+            icon: "success"
+        });
+        datatables.ajax.reload();
+        return;
+    }
+
+    Swal.fire({
+        title: "Error!",
+        text: responseJSON.errors.Messages[0],
+        icon: "error"
+    })
+
+    return;
+}
+//#end region
