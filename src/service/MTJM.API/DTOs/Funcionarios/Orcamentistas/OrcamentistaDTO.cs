@@ -25,7 +25,7 @@ public class OrcamentistaDTO
             DataContratacao = o.DataContratacao,
             Endereco = o.Endereco,
             TempoDeCasa = o.TempoDeCasa,
-            CoordenadorRegionalId = o.CoordenadorRegionalId
+            CoordenadorRegionalId = o.CoordenadorRegionalId.Value
         };
     }
 }

@@ -105,6 +105,28 @@ public class CoordenadorRegionalController : Controller
     }
     #endregion
 
+    #region POST - Edit
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ClaimsAuthorize(PermissionsType.CRV, PermissionValue.Update)]
+    public async Task<IActionResult> Edit(int id, CoordenadorRegionalViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+            return View(viewModel);
+
+        var response = await _requestApiService.Request($"CoordenadorRegional/Edit/{id}", Method.PUT, viewModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            TempData["SuccessMessage"] = "Coordenador Regional edited successfully!";
+            return RedirectToAction("Index", "CoordenadorRegional");
+        }
+
+        TempData["ErrorMessage"] = "Unexpected error!";
+        return View(viewModel);
+    }
+    #endregion
+
     #region POST - Delete
     [HttpPost]
     [ValidateAntiForgeryToken]

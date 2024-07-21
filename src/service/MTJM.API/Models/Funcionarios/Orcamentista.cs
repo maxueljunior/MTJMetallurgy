@@ -9,8 +9,8 @@ public class Orcamentista : Funcionario
 {
     #region Properties
     public ICollection<Proposta> Propostas { get; set; }
-    public int CoordenadorRegionalId { get; set; } // Required foreign key property
-    public CoordenadorRegional CoordenadorRegional { get; set; } // Required reference navigation to principal
+    public int? CoordenadorRegionalId { get; set; } // Required foreign key property
+    public CoordenadorRegional? CoordenadorRegional { get; set; } // Required reference navigation to principal
     #endregion
 
     #region Constructors
@@ -28,6 +28,7 @@ public class Orcamentista : Funcionario
     }
     #endregion
 
+
     #region Methods
     protected override void ValidateModel()
         => ValidationResult = new OrcamentistaValidator().Validate(this);
@@ -42,6 +43,11 @@ public class Orcamentista : Funcionario
         CoordenadorRegionalId = requestDTO.CoordenadorRegionalId;
 
         ValidateModel();
+    }
+
+    public void RemoveCoordenadorRegional()
+    {
+        CoordenadorRegional = null;
     }
     #endregion
 }

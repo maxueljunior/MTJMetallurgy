@@ -13,7 +13,7 @@ public class OrcamentistaMapping : IEntityTypeConfiguration<Orcamentista>
         builder.HasOne(o => o.CoordenadorRegional)
             .WithOne(o => o.Orcamentista)
             .HasForeignKey<Orcamentista>(o => o.CoordenadorRegionalId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Ignore(o => o.ValidationResult);
 

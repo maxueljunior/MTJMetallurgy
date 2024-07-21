@@ -56,6 +56,11 @@ public class Cliente : Base
 
         ValidateModel();
     }
+
+    public void RemoveCoordenadorRegional()
+    {
+        CoordenadorRegional = null;
+    }
     #endregion
 }
 

@@ -19,7 +19,7 @@ public class Repository<T> : IRepository<T> where T : Base
     #region Methods
     public IQueryable<T> GetAll()
     {
-        return _context.Set<T>().AsNoTracking();
+        return _context.Set<T>();
     }
 
     public async Task<T> Create(T entity)

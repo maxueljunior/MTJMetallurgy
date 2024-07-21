@@ -5,6 +5,7 @@ using MTJM.API.Attributes;
 using MTJM.API.DTOs.Funcionarios.CoordenadorRegionals;
 using MTJM.API.Events;
 using MTJM.API.Listeners.Orcamentista;
+using MTJM.API.Models.Clientes;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Permissions;
 using MTJM.API.Services.Auth;
@@ -128,7 +129,12 @@ public class CoordenadorRegionalController : BaseController
     [ClaimsAuthorize(nameof(PermissionsType.CRV), nameof(PermissionsValue.Delete))]
     public async Task<IActionResult> Delete(int id)
     {
-        var crv = await _coordenadorRegionalRepository.GetById(id);
+
+        var crv = await _coordenadorRegionalRepository.GetAll()
+            .Where(c => c.Id == id)
+            .Include(c => c.Orcamentista)
+            .Include(c => c.Clientes)
+            .FirstOrDefaultAsync();
 
         if (crv is null)
         {
@@ -137,6 +143,12 @@ public class CoordenadorRegionalController : BaseController
         }
 
         crv.SetActive(false);
+        crv.Orcamentista.RemoveCoordenadorRegional();
+
+        foreach (var cliente in crv.Clientes) {
+            cliente.RemoveCoordenadorRegional();
+        }
+
         await _coordenadorRegionalRepository.Edit(crv);
 
         return CustomResponse();
