@@ -62,7 +62,7 @@
 
                                 @if(_claimsHelper.UserHaveAccess(PermissionsType.Orcamentista)){
                                 <li class="nav-item">
-                                    <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                    <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Orcamentista">
                                         <i class="fa-solid fa-user-pen"></i>
                                         <span>Orçamentista</span>
                                     </a>
@@ -209,7 +209,7 @@
                 @if (_claimsHelper.UserHaveAccess(PermissionsType.Orcamentista))
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-white m-0" href="#">
+                        <a class="nav-link text-white m-0" asp-action="Index" asp-controller="Orcamentista">
                             <i class="fa-solid fa-user-pen d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
                             <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Orçamentista</span>
                         </a>
