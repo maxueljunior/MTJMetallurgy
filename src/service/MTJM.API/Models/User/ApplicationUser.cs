@@ -8,4 +8,5 @@ public class ApplicationUser : IdentityUser
 {
     public Cliente Cliente { get; set; }
     public CoordenadorRegional CoordenadorRegional { get; set; }
+    public Orcamentista Orcamentista { get; set; }
 }

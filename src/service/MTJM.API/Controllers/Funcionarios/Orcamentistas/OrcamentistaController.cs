@@ -8,6 +8,7 @@ using MTJM.API.Events;
 using MTJM.API.Listeners.Orcamentista;
 using MTJM.API.Models.Funcionarios;
 using MTJM.API.Models.Permissions;
+using MTJM.API.Services.Auth;
 
 namespace MTJM.API.Controllers.Funcionarios.Orcamentistas;
 
@@ -18,16 +19,19 @@ public class OrcamentistaController : BaseController
     private readonly IOrcamentistaRepository _orcamentistaRepository;
     private readonly ICoordenadorRegionalRepository _coordenadorRegionalRepository;
     private readonly IDispatcher _dispatcher;
+    private readonly IAuthServices _authServices;
     #endregion
 
     #region Constructor
     public OrcamentistaController(IOrcamentistaRepository orcamentistaRepository,
         ICoordenadorRegionalRepository coordenadorRegionalRepository,
-        IDispatcher dispatcher = null)
+        IDispatcher dispatcher = null,
+        IAuthServices authServices = null)
     {
         _orcamentistaRepository = orcamentistaRepository;
         _coordenadorRegionalRepository = coordenadorRegionalRepository;
         _dispatcher = dispatcher;
+        _authServices = authServices;
     }
     #endregion
 
@@ -41,11 +45,15 @@ public class OrcamentistaController : BaseController
     {
         var responseDTO = new List<OrcamentistaDTO>();
 
-        _orcamentistaRepository.GetAll().ToList().ForEach(orcamentista =>
-        {
-            OrcamentistaDTO p = orcamentista;
-            responseDTO.Add(p);
-        });
+        _orcamentistaRepository.GetAll()
+            .Where(o => o.Ativo)
+            .Include(o => o.CoordenadorRegional)
+            .ToList()
+            .ForEach(orcamentista =>
+            {
+                OrcamentistaDTO p = orcamentista;
+                responseDTO.Add(p);
+            });
 
         return CustomResponse(responseDTO);
     }
@@ -96,8 +104,14 @@ public class OrcamentistaController : BaseController
             return CustomResponse();
         }
 
-        OrcamentistaDTO responseDTO = await _orcamentistaRepository.Create(orcamentista);
         await _dispatcher.Publish(new FuncionarioCreatedEvent(requestDTO.Nome, requestDTO.Sobrenome));
+
+        var user = await _authServices.GetUser(string.Concat(orcamentista.Nome.ToLower(), ".", orcamentista.Sobrenome.ToLower()));
+
+        if (!string.IsNullOrEmpty(user.Id))
+            orcamentista.SetUserAccount(user.Id);
+
+        OrcamentistaDTO responseDTO = await _orcamentistaRepository.Create(orcamentista);
 
         return CustomResponse(responseDTO);
     }
@@ -141,7 +155,10 @@ public class OrcamentistaController : BaseController
             return CustomResponse();
         }
 
-        await _orcamentistaRepository.Delete(id);
+        orcamentista.SetActive(false);
+        orcamentista.RemoveCoordenadorRegional();
+
+        await _orcamentistaRepository.Edit(orcamentista);
 
         return CustomResponse();
     }

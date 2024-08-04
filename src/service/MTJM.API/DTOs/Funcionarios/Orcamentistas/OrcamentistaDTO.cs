@@ -13,6 +13,7 @@ public class OrcamentistaDTO
     public Endereco Endereco { get; set; }
     public int TempoDeCasa { get; set; }
     public int CoordenadorRegionalId { get; set; }
+    public string CoordenadorRegional { get; set; }
 
     public static implicit operator OrcamentistaDTO(Orcamentista o)
     {
@@ -25,7 +26,8 @@ public class OrcamentistaDTO
             DataContratacao = o.DataContratacao,
             Endereco = o.Endereco,
             TempoDeCasa = o.TempoDeCasa,
-            CoordenadorRegionalId = o.CoordenadorRegionalId.Value
+            CoordenadorRegionalId = o.CoordenadorRegionalId ?? 0,
+            CoordenadorRegional = o.CoordenadorRegional is not null ? string.Concat(o.CoordenadorRegional.Nome, " ", o.CoordenadorRegional.Sobrenome) : string.Empty
         };
     }
 }

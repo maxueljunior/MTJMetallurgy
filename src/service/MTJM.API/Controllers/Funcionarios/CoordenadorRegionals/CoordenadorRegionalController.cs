@@ -56,6 +56,29 @@ public class CoordenadorRegionalController : BaseController
     }
     #endregion
 
+    #region Get All Without Orcamentista
+    [HttpGet]
+    [Route("GetAllWithoutOrcamentista")]
+    [ClaimsAuthorize(nameof(PermissionsType.CRV), nameof(PermissionsValue.Read))]
+    public IActionResult GetAllWithoutOrcamentista()
+    {
+        var responseDTO = new List<CoordenadorRegionalDTO>();
+
+        _coordenadorRegionalRepository.GetAll()
+            .Include(c => c.Orcamentista)
+            .Where(c => c.Ativo &&
+                        c.Orcamentista == null)
+            .ToList()
+            .ForEach(crv =>
+            {
+                CoordenadorRegionalDTO p = crv;
+                responseDTO.Add(p);
+            });
+
+        return CustomResponse(responseDTO);
+    }
+    #endregion
+
     #region Get By Id
     [HttpGet]
     [Route("GetById/{id:int}")]

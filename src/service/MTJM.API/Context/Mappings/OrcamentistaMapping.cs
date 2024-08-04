@@ -27,6 +27,10 @@ public class OrcamentistaMapping : IEntityTypeConfiguration<Orcamentista>
                 end.Property(e => e.Logradouro).HasColumnName("Logradouro");
             });
 
+        builder.HasOne(o => o.ApplicationUser)
+            .WithOne(o => o.Orcamentista)
+            .HasForeignKey<Orcamentista>(o => o.UserAccountId);
+
         builder.ToTable("Orcamentista");
     }
 }
