@@ -166,7 +166,7 @@ public class CoordenadorRegionalController : BaseController
         }
 
         crv.SetActive(false);
-        crv.Orcamentista.RemoveCoordenadorRegional();
+        crv.Orcamentista?.RemoveCoordenadorRegional();
 
         foreach (var cliente in crv.Clientes) {
             cliente.RemoveCoordenadorRegional();

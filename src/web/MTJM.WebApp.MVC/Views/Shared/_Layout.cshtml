@@ -93,7 +93,7 @@
 
                                 @if(_claimsHelper.UserHaveAccess(PermissionsType.Servico)){
                                     <li class="nav-item">
-                                        <a class="nav-link text-white m-0 fs-6" asp-action="" asp-controller="">
+                                        <a class="nav-link text-white m-0 fs-6" asp-action="Index" asp-controller="Servicos">
                                             <i class="fa-regular fa-clock"></i>
                                             <span>Serviços</span>
                                         </a>
@@ -240,7 +240,7 @@
 
                 @if(_claimsHelper.UserHaveAccess(PermissionsType.Servico)){
                     <li class="nav-item">
-                        <a class="nav-link text-white m-0" href="#">
+                        <a class="nav-link text-white m-0" asp-action="Index" asp-controller="Servicos">
                             <i class="fa-regular fa-clock d-flex justify-content-center align-content-center d-md-flex d-lg-inline-block"></i>
                             <span class="d-none d-md-inline-block d-md-flex d-lg-inline-block justify-content-center align-content-center mt-md-2 mt-lg-0">Serviços</span>
                         </a>
