@@ -60,14 +60,14 @@ public class CoordenadorRegionalController : BaseController
     [HttpGet]
     [Route("GetAllWithoutOrcamentista")]
     [ClaimsAuthorize(nameof(PermissionsType.CRV), nameof(PermissionsValue.Read))]
-    public IActionResult GetAllWithoutOrcamentista()
+    public IActionResult GetAllWithoutOrcamentista([FromQuery] int orcamentistaId = 0)
     {
         var responseDTO = new List<CoordenadorRegionalDTO>();
 
         _coordenadorRegionalRepository.GetAll()
             .Include(c => c.Orcamentista)
             .Where(c => c.Ativo &&
-                        c.Orcamentista == null)
+                        ( c.Orcamentista == null || c.Orcamentista.Id == orcamentistaId ))
             .ToList()
             .ForEach(crv =>
             {

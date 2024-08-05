@@ -75,12 +75,44 @@ public class OrcamentistaController : Controller
         var responseContent = await response.Content.ReadAsStringAsync();
 
         var viewModel = JsonHelper.JsonToObject<OrcamentistaViewModel>(responseContent);
-        viewModel = await PopulateCrvsWithoutOrcamentista(viewModel);
+        viewModel = await PopulateCrvsWithoutOrcamentista(viewModel, id);
 
         if (response.IsSuccessStatusCode)
             return View(viewModel);
 
         var customResponse = JsonHelper.JsonToObject<CustomResponse>(responseContent);
+
+        TempData["ErrorMessage"] = customResponse.Errors.Values.First().First() ?? "Occurred inexpected error";
+
+        return RedirectToAction("Index", "Orcamentista");
+    }
+    #endregion
+
+    #region POST - Edit
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, OrcamentistaViewModel viewModel)
+    {
+        viewModel = await PopulateCrvsWithoutOrcamentista(viewModel, id);
+
+        if (!ModelState.IsValid)
+            return View(viewModel);
+
+        if (id < 0)
+        {
+            TempData["ErrorMessage"] = "Id is required!";
+            return View(viewModel);
+        }
+
+        var response = await _requestApiService.Request($"Orcamentista/Edit/{id}", Method.PUT, viewModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            TempData["SuccessMessage"] = "Orcamentista edit successfully!";
+            return RedirectToAction("Index", "Orcamentista");
+        }
+
+        var customResponse = JsonHelper.JsonToObject<CustomResponse>(await response.Content.ReadAsStringAsync());
 
         TempData["ErrorMessage"] = customResponse.Errors.Values.First().First() ?? "Occurred inexpected error";
 
@@ -131,9 +163,9 @@ public class OrcamentistaController : Controller
     #endregion
 
     #region Private Methods
-    private async Task<OrcamentistaViewModel> PopulateCrvsWithoutOrcamentista(OrcamentistaViewModel viewModel)
+    private async Task<OrcamentistaViewModel> PopulateCrvsWithoutOrcamentista(OrcamentistaViewModel viewModel, int orcamentistaId = 0)
     {
-        var response = await _requestApiService.Request("CoordenadorRegional/GetAllWithoutOrcamentista", Method.GET);
+        var response = await _requestApiService.Request($"CoordenadorRegional/GetAllWithoutOrcamentista?orcamentistaId={orcamentistaId}", Method.GET);
         var responseContent = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
