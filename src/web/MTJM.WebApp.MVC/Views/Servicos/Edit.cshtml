@@ -1,0 +1,30 @@
+﻿@model ServicosViewModel
+
+@if (TempData["ErrorMessage"] is not null)
+{
+    <input id="errorMessage" value="@TempData["ErrorMessage"]" hidden />
+}
+
+
+<div class="card my-2 shadow-lg bg-body-tertiary rounded">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 col-md-6 align-items-center">
+                <h1 class="fs-2 fw-normal">Edit Servicos</h1>
+            </div>
+
+            <div class="col-6 col-md-6 d-flex align-items-center justify-content-end">
+                <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Servicos">Back Index</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <partial name="./Partial/_PartialFormEditServicos" model="@Model" />
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Views/Servicos/Edit.cshtml.js"></script>
+}

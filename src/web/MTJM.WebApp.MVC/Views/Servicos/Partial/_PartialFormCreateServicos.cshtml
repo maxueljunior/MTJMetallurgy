@@ -1,0 +1,41 @@
+﻿@model ServicosViewModel
+
+<form id="formServicos" class="row g-3 p-2" method="post" asp-controller="Servicos" asp-action="Create">
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Descricao">Descricao</label>
+        <input type="text" class="form-control" placeholder="Descricao..." id="inputDescricao" asp-for="Descricao" />
+        <span class="text-danger" asp-validation-for="Descricao"></span>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Horas">Horas</label>
+        <div class="input-group">
+            <span class="input-group-text">H</span>
+            <input type="text" class="form-control" aria-label="Horas" asp-for="Horas">
+        </div>
+        <span class="text-danger" asp-validation-for="Horas"></span>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <label asp-for="PrecoPorHora">Preco Por Hora</label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="text" class="form-control" aria-label="PrecoPorHora" asp-for="PrecoPorHora">
+        </div>
+        <span class="text-danger" asp-validation-for="PrecoPorHora"></span>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <label asp-for="Unidade">Unidade</label>
+        <select class="form-select" asp-for="Unidade">
+            <option value="SV" selected>SV</option>
+        </select>
+        <span class="text-danger" asp-validation-for="Unidade"></span>
+    </div>
+
+    <div class="col-12 text-end align-self-end">
+        <button id="btnSubmitForm" class="btn btn-success" type="submit">Create</button>
+    </div>
+
+</form>

@@ -30,7 +30,7 @@ async function InitializeDataTables() {
                 data: null,
                 render: function (data, type, row, meta) {
                     if (data)
-                        return `<a href="${GetBaseURL()}/Servico/Edit/${row.id}" class="btn btn-info"><i class="fa fa-pen"/></a>`;
+                        return `<a href="${GetBaseURL()}/Servicos/Edit/${row.id}" class="btn btn-info"><i class="fa fa-pen"/></a>`;
                 },
                 orderable: false,
             },
